@@ -86,9 +86,6 @@ void draw_line(mlx_image_t *img, int x0, int y0, double angle) {
 
 int my_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t color)
 {
-	printf("width: %d , lenght: %d\n", img->width, img->height);
-    printf("x = %d, y = %d\n", x, y);
-    fflush(stdout);
 	if(!img || x > img->width || y > img->height)
 	{
 		printf("Error:  gros con POB!\n");

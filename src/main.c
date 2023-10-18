@@ -23,22 +23,17 @@ int main(int ac, char **av)
             return(-1);
         }
         mlx_set_setting(MLX_MAXIMIZED, false);
-        r.mlx = mlx_init(WIDTH, HEIGHT, "Cub2D", true);
+        r.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", true);
         if (!r.mlx) 
             return (-1);
         r.img = mlx_new_image(r.mlx, WIDTH, HEIGHT);
         if (!r.img || (mlx_image_to_window(r.mlx, r.img, 0, 0) < 0))
 		    return(-1);
         init_tmp(&r);
-        //mlx_loop_hook(r.mlx, &playerendering2d, &r);
-	    mlx_key_hook(r.mlx, &my_keyhook, &r);
+        mlx_loop_hook(r.mlx, &playerendering2d, &r);
         mlx_loop_hook(r.mlx, &calcul_line, &r);
-        mlx_loop_hook(r.mlx, &playerrendering3D, &r);
-       // r.mlx3 = mlx_init(WIDTH, HEIGHT, "Cub3D", true);
-        //r.img3 = mlx_new_image(r.mlx3, WIDTH, HEIGHT);
+	    mlx_key_hook(r.mlx, &my_keyhook, &r);
 	    mlx_loop(r.mlx);
 	    mlx_terminate(r.mlx);
-        //mlx_loop(r.mlx3);
-	    //mlx_terminate(r.mlx3);
     }
 }
