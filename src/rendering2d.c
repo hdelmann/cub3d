@@ -189,9 +189,54 @@ void my_draw_line(t_runtime *r)
 void my_draw_line_fov(t_runtime *r)
 {
     int k = 0;
-    //float tmpx = r->line.start_v.x;
-    //float tmpy = r->line.start_v.y;
-    while (k < WIDTH)
+    float tmpx = r->line.start_v.x;
+    float tmpy = r->line.start_v.y;
+    float tmprad = r->line.rad_raystart_v;
+    while (k < WIDTH / 2)
+    { 
+
+        int i = 0;
+        int j = 0;
+        while (1)
+        {
+            r->line.end_v.x = roundf(r->player.pos.x + (float)(i* cos(r->line.rad_raystart_v))) - 5;
+            r->line.end_v.y = roundf(r->player.pos.y + (float)(j*sin(r->line.rad_raystart_v))) + 5;
+            i += 1;
+            j += 1;
+            if (r->map.map[(int)r->line.end_v.y / 100][(int)r->line.end_v.x / 100] == '1')
+                break;
+        }
+        int e2;
+        float dx = my_fabs(r->line.start_v.x - r->line.end_v.x);
+        float dy = my_fabs(r->line.start_v.y - r->line.end_v.y);
+        float sx = (r->line.start_v.x < r->line.end_v.x) ? 1 : -1;
+        float sy = (r->line.start_v.y < r->line.end_v.y) ? 1 : -1;
+        float err = dx - dy;
+        while (1)
+        {
+            my_mlx_put_pixel(r->img, r->line.start_v.x, r->line.start_v.y, get_rgba(0, 0, 255, 255));
+            if (r->line.start_v.x == r->line.end_v.x && r->line.start_v.y == r->line.end_v.y)
+                break;
+            e2 = 2* err;
+            if (e2 > -dy)
+            {
+                err -= dy;
+                r->line.start_v.x += sx;
+            }
+            if (e2 < dx)
+            {
+                err += dx;
+                r->line.start_v.y += sy;
+            }
+        }
+        r->line.rad_raystart_v += r->line.rad_in;
+        k++;
+        r->line.start_v.y = tmpy;
+        r->line.start_v.x = tmpx;
+    }
+    r->line.rad_raystart_v = tmprad;
+    k = 0;
+    while (k < WIDTH / 2)
     { 
 
         int i = 0;
@@ -230,5 +275,7 @@ void my_draw_line_fov(t_runtime *r)
         }
         r->line.rad_raystart_v -= r->line.rad_in;
         k++;
+        r->line.start_v.y = tmpy;
+        r->line.start_v.x = tmpx;
     }
 }   
