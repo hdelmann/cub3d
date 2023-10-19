@@ -239,3 +239,23 @@ float my_fabs(float i)
 {
 	return(i < 0) ? -i : i;
 }
+
+int charlen(char** tableau) {
+    int longueur = 0;
+
+    while (tableau[longueur] != NULL) {
+        longueur++;
+    }
+
+    return longueur;
+}
+
+int my_strlen(const char* chaine) {
+    int longueur = 0;
+
+    while (chaine[longueur] != '\0') {
+        longueur++;
+    }
+
+    return longueur;
+}

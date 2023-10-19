@@ -88,6 +88,7 @@ int my_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t color)
 {
 	if(!img || x > img->width || y > img->height)
 	{
+        printf("x = %d > %d\ny = %d > %d\n", x, WIDTH, y, HEIGHT);
 		printf("Error:  gros con POB!\n");
 		exit (-1);
 	}

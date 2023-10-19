@@ -18,7 +18,6 @@ enum {
 #define PLAYER_SIZE 10
 #define CASE_SIZE 100
 #define PI 3.141592653589793238462643383279502884197
-#define FOV 1.0472
 #define HEIGHT 1080
 #define WIDTH 1920
 
@@ -34,6 +33,7 @@ typedef struct player
     float pdir;
     float pdir_v;
     int dir;
+    float FOV; 
 }   t_player;
 
 typedef struct s_line
@@ -43,8 +43,14 @@ typedef struct s_line
     float   rad_raystart;
     float   rad_raystart_v;
     float   rad_in;
+    float rad_fov;
     t_point start_v;
     t_point end_v;
+    t_point end_def;
+    t_point start_fov;
+    t_point end_fov;
+    t_point end_fov2;
+    t_point end_defov;
     float z;
 }   t_line;
 
@@ -81,15 +87,21 @@ void    map_fill(t_runtime *r, int fd);
 char	*ft_strdup_f(char *src);
 void my_draw_line_fov(t_runtime *r);
 char	**ft_realloc2(char **map, int i);
+void calcul_line_fovx(void *param);
+void calcul_line_fovy(void *param);
 char *replace_n_to_r(char *line);
 int my_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t color);
 int get_rgba(int r, int g, int b, int a);
 void fillcubeborder(t_runtime *r);
 void playerendering2d(void *param);
 void my_keyhook(mlx_key_data_t keydata, void *param);
-void calcul_line(void *param);
+void calcul_line_interx(void *param);
+void calcul_line_intery(void *param);
 void my_draw_line(t_runtime *r);
 float my_fabs(float i);
 void    playerrendering3D(void *param);
+int charlen(char** tableau);
+int my_strlen(const char* chaine);
+void fov_rendering(t_runtime *r);
 
 #endif

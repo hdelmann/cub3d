@@ -1,12 +1,20 @@
 #include "../includes/Cub3D.h"
 void init_tmp(t_runtime *r)
 {
-    r->player.pos.x = 205;
-    r->player.pos.y = 195;
-    r->player.pdir = PI;
-    r->player.pdir_v = PI;
+    r->player.pos.x = 255;
+    r->player.pos.y = 245;
+    r->player.pdir = PI/2;
+    r->player.pdir_v = PI/2;
     r->player.dir = DIR_W;
-    r->line.rad_raystart_v = r->player.pdir_v + FOV / 2;
+    r->line.start.x = r->player.pos.x - 5;
+    r->line.start_v.x = r->player.pos.x - 5;
+    r->line.start.y = r->player.pos.y + 5;
+    r->line.start_v.y = r->player.pos.y + 5;
+    r->line.start_fov.y = r->player.pos.y + 5;
+    r->line.start_fov.x = r->player.pos.x + 5;
+    r->line.end.x = r->line.start.x;
+    r->line.end.y = r->line.start.y;
+    r->player.FOV = PI/3;
 }
 
 int main(int ac, char **av)
@@ -31,7 +39,6 @@ int main(int ac, char **av)
 		    return(-1);
         init_tmp(&r);
         mlx_loop_hook(r.mlx, &playerendering2d, &r);
-        mlx_loop_hook(r.mlx, &calcul_line, &r);
 	    mlx_key_hook(r.mlx, &my_keyhook, &r);
 	    mlx_loop(r.mlx);
 	    mlx_terminate(r.mlx);

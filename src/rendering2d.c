@@ -50,18 +50,69 @@ void playerendering2d(void  *param)
 {
     t_runtime  *r;
     r = param;
-    r->line.rad_in = FOV / WIDTH;
     fillcubeborder(r);
      for (int i = r->player.pos.y + 1; i < r->player.pos.y + PLAYER_SIZE; i++) {
         for (int j = r->player.pos.x  - 1; j > r->player.pos.x - PLAYER_SIZE; j--) {
             my_mlx_put_pixel(r->img, j, i, get_rgba(255, 0, 0, 255));
         }
     }
-    my_draw_line(r);
-    r->line.rad_raystart_v = r->player.pdir_v + FOV / 2;
-    my_draw_line_fov(r);
+    calcul_line_intery(r);
+    calcul_line_interx(r);
+    if (r->line.end.x == r->line.start.x && r->line.end.y == r->line.start.y)
+    {        
+        r->line.end.x = r->line.end_v.x;
+        r->line.end.y = r->line.end_v.y;
+    }
+    else if  (!(r->line.end_v.x == r->line.start_v.x && r->line.end_v.y == r->line.start_v.y) && sqrt(((r->line.end.x - r->line.start.x) * (r->line.end.x - r->line.start.x)) + ((r->line.end.y - r->line.start.y) * (r->line.end.y - r->line.start.y))) > sqrt(((r->line.end_v.x - r->line.start.x) * (r->line.end_v.x - r->line.start.x)) + ((r->line.end_v.y - r->line.start.y) * (r->line.end_v.y - r->line.start.y))))
+    {
+        r->line.end.x = r->line.end_v.x;
+        r->line.end.y = r->line.end_v.y;
+    }
+    r->line.end_def.x = r->line.end.x;
+    r->line.end_def.y = r->line.end.y;
+    fov_rendering(r);
 }
 
+void fov_rendering(t_runtime *r)
+{
+    float tmp_rad;
+    r->line.rad_fov= r->player.pdir_v - r->player.FOV/2;
+    tmp_rad = r->line.rad_fov;
+    while (tmp_rad <= r->player.pdir_v + r->player.FOV/2)
+    {
+        tmp_rad = r->line.rad_fov;
+        if (r->line.rad_fov < 0)
+        {
+            r->line.rad_fov += 2 * PI; 
+        }
+        else if (r->line.rad_fov >= 2 * PI)
+        {
+            r->line.rad_fov -= 2 * PI;
+        }
+        //printf("rad2 = %f\n", r->line.rad_in);
+        calcul_line_fovx(r);
+        calcul_line_fovy(r);
+        if (r->line.end_fov.x == r->line.start_fov.x && r->line.end_fov.y == r->line.start_fov.y)
+        {  
+            r->line.end_fov.x = r->line.end_fov2.x;
+            r->line.end_fov.y = r->line.end_fov2.y;
+        }
+        if ((r->line.end_fov2.x == r->line.start_fov.x && r->line.end_fov2.y == r->line.start_fov.y))
+        {}
+        else if  (sqrt(((r->line.end_fov.x - r->line.start_fov.x) * (r->line.end_fov.x - r->line.start_fov.x)) + ((r->line.end_fov.y - r->line.start_fov.y) * (r->line.end_fov.y - r->line.start_fov.y))) > sqrt(((r->line.end_fov2.x - r->line.start_fov.x) * (r->line.end_fov2.x - r->line.start_fov.x)) + ((r->line.end_fov2.y - r->line.start_fov.y) * (r->line.end_fov2.y - r->line.start_fov.y))))
+        {
+            r->line.end_fov.x = r->line.end_fov2.x;
+            r->line.end_fov.y = r->line.end_fov2.y;
+        }
+        r->line.end_defov.x = r->line.end_fov.x;
+        r->line.end_defov.y = r->line.end_fov.y;
+       // printf("y = %f, x = %f\n ", r->line.end_defov.y, r->line.end_defov.x);
+        my_draw_line(r);
+        r->line.rad_fov = tmp_rad;
+        r->line.rad_fov += 0.01875;
+    }
+}
+//faire un tableau pour tester les deplacement car sinon ca peut buger giltch hors map
 void my_keyhook(mlx_key_data_t keydata, void *param)
 {
     t_runtime *r;
@@ -77,27 +128,27 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         if(r->player.dir == DIR_A)
             r->player.pdir -= PI;
         r->player.dir = DIR_D;
-        if (sqrt(((r->line.end.x - r->line.start.x) * (r->line.end.x - r->line.start.x)) + ((r->line.end.y - r->line.start.y) * (r->line.end.y - r->line.start.y))) > 15)
+        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 25)
         {
-            r->player.pos.x += roundf((float)(5* cos(r->line.rad_raystart)));
-            r->player.pos.y += roundf((float)(5 * sin(r->line.rad_raystart)));
+            r->player.pos.x += roundf((float)(5* cos(r->player.pdir)));
+            r->player.pos.y -= roundf((float)(5 * sin(r->player.pdir)));
         }
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_W))
     {
-        if(r->player.dir == DIR_S)
+       if(r->player.dir == DIR_S)
             r->player.pdir -= PI;
         if(r->player.dir == DIR_A)
             r->player.pdir += PI/2;        
         if(r->player.dir == DIR_D)
             r->player.pdir -= PI/2;
         r->player.dir = DIR_W;
-        if (sqrt(((r->line.end.x - r->line.start.x) * (r->line.end.x - r->line.start.x)) + ((r->line.end.y - r->line.start.y) * (r->line.end.y - r->line.start.y))) > 15)
+        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 25)
         {
-            r->player.pos.x += roundf((float)(5* cos(r->line.rad_raystart)));
-            r->player.pos.y += roundf((float)(5 * sin(r->line.rad_raystart)));
+            r->player.pos.x += roundf((float)(5* cos(r->player.pdir)));
+            r->player.pos.y -= roundf((float)(5 * sin(r->player.pdir)));
         }
-    }
+    }   
     if(mlx_is_key_down(r->mlx, MLX_KEY_S))
     {
         if(r->player.dir == DIR_W)
@@ -107,11 +158,10 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         if(r->player.dir == DIR_D)
             r->player.pdir += PI/2;
         r->player.dir = DIR_S;
-        if (sqrt(((r->line.end.x - r->line.start.x) * (r->line.end.x - r->line.start.x)) + ((r->line.end.y - r->line.start.y) * (r->line.end.y - r->line.start.y))) > 15)
+        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 25)
         {
-            r->player.pos.x += roundf((float)(5* cos(r->line.rad_raystart)));
-            r->player.pos.y += roundf((float)(5 * sin(r->line.rad_raystart)));
-            //r->player.pdir += PI;
+            r->player.pos.x += roundf((float)(5* cos(r->player.pdir)));
+            r->player.pos.y -= roundf((float)(5 * sin(r->player.pdir)));
         }
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_A))
@@ -123,13 +173,13 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         if(r->player.dir == DIR_D)
             r->player.pdir += PI;
         r->player.dir = DIR_A;
-        if (sqrt(((r->line.end.x - r->line.start.x) * (r->line.end.x - r->line.start.x)) + ((r->line.end.y - r->line.start.y) * (r->line.end.y - r->line.start.y))) > 15)
+        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 25)
         {
-            r->player.pos.x += roundf((float)(5* cos(r->line.rad_raystart)));
-            r->player.pos.y += roundf((float)(5 * sin(r->line.rad_raystart)));
+            r->player.pos.x += roundf((float)(5* cos(r->player.pdir)));
+            r->player.pos.y -= roundf((float)(5 * sin(r->player.pdir)));
         }
     }
-    if(mlx_is_key_down(r->mlx, MLX_KEY_LEFT))
+    if(mlx_is_key_down(r->mlx, MLX_KEY_RIGHT))
     {
         r->player.pdir -= 0.0174533 * 5;
         if(r->player.pdir < 0)
@@ -143,7 +193,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
 		}
 
     }
-    if(mlx_is_key_down(r->mlx, MLX_KEY_RIGHT))
+    if(mlx_is_key_down(r->mlx, MLX_KEY_LEFT))
     {
        r->player.pdir += 0.0174533 * 5;
         if(r->player.pdir > 2 * PI)
@@ -156,36 +206,39 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
 			r->player.pdir_v -= 2 * PI;
 		}
     }
-
 }
 
 void my_draw_line(t_runtime *r)
 {
+    float xsta = r->line.start_fov.x;
+    float ysta = r->line.start_fov.y;
+    float xend = r->line.end_defov.x;
+    float yend = r->line.end_defov.y;
     int e2;
-    float dx = my_fabs(r->line.start.x - r->line.end.x);
-    float dy = my_fabs(r->line.start.y - r->line.end.y);
-    float sx = (r->line.start.x < r->line.end.x) ? 1 : -1;
-    float sy = (r->line.start.y < r->line.end.y) ? 1 : -1;
+    float dx = my_fabs(xsta - xend);
+    float dy = my_fabs(ysta - yend);
+    float sx = (xsta < xend) ? 1 : -1;
+    float sy = (ysta < yend) ? 1 : -1;
     float err = dx - dy;
     while (1)
     {
-        my_mlx_put_pixel(r->img, r->line.start.x, r->line.start.y, get_rgba(0, 255, 255, 255));
-        if (r->line.start.x == r->line.end.x && r->line.start.y == r->line.end.y)
+        my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 255, 255));
+        if (roundf(xsta) == roundf(xend) && roundf(ysta) == roundf(yend))
             break;
         e2 = 2* err;
         if (e2 > -dy)
         {
             err -= dy;
-            r->line.start.x += sx;
+            xsta += sx;
         }
         if (e2 < dx)
         {
             err += dx;
-            r->line.start.y += sy;
+            ysta  += sy;
         }
     }
 }
-
+/*
 void my_draw_line_fov(t_runtime *r)
 {
     int k = 0;
@@ -278,4 +331,4 @@ void my_draw_line_fov(t_runtime *r)
         r->line.start_v.y = tmpy;
         r->line.start_v.x = tmpx;
     }
-}   
+}   */
