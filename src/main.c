@@ -31,10 +31,10 @@ int main(int ac, char **av)
             return(-1);
         }
         mlx_set_setting(MLX_MAXIMIZED, false);
-        r.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", true);
+        r.mlx = mlx_init(WIDTH , HEIGHT, "Cub3D", true);
         if (!r.mlx) 
             return (-1);
-        r.img = mlx_new_image(r.mlx, 320, 200);
+        r.img = mlx_new_image(r.mlx, WIDTH, HEIGHT);
         if (!r.img || (mlx_image_to_window(r.mlx, r.img, 0, 0) < 0))
 		    return(-1);
         init_tmp(&r);

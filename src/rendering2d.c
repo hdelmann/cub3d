@@ -58,8 +58,8 @@ void playerendering2d(void  *param)
             my_mlx_put_pixel(r->img, j, i, get_rgba(255, 0, 0, 255));
         }
     }*/
-    for (int i = 0; i < 320; i++) {
-        for (int j = 0 ; j < 200; j++) {
+    for (int i = 0; i < WIDTH; i++) {
+        for (int j = 0 ; j < HEIGHT; j++) {
             my_mlx_put_pixel(r->img, i, j, get_rgba(255, 0, 0, 255));
         }
     }
@@ -119,11 +119,11 @@ void fov_rendering(t_runtime *r)
        // printf("y = %f, x = %f\n ", r->line.end_defov.y, r->line.end_defov.x);
        // my_draw_line(r);
         r->line.rad_fov = tmp_rad;
-        r->line.rad_fov += 0.003290;
-        r->line.dist = calucl_dist(r->line.start_fov.x, r->line.end_defov.x, r->line.start_fov.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v);
-        printf("ray%f = %f\n", i, r->line.dist);
+        r->line.rad_fov += 0.0005457;
+        r->line.dist = calucl_dist(r->line.start_fov.x, r->line.end_defov.x, r->line.start_fov.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v); 
+        //printf("ray%f = %f\n", i, r->line.dist);
         playerrendering3D(r, i);
-    }
+        }
 }
 //faire un tableau pour tester les deplacement car sinon ca peut buger giltch hors map
 void my_keyhook(mlx_key_data_t keydata, void *param)
