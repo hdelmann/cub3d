@@ -1,5 +1,7 @@
 #include "../includes/Cub3D.h"
 
+
+
 void fillcubeborder(t_runtime *r)
 {
     int i;
@@ -7,13 +9,13 @@ void fillcubeborder(t_runtime *r)
     int x;
     int y;
 
-    y = 0;
+    y = 20;
     i = 0;
    // printf("seg ou? %c\n", r->map.un_pmap[1][1]);
 
     while(r->map.map[i])
     {
-        x = 100;
+        x = 64;
         j = 0;
         while(r->map.map[i][j])
         {
@@ -38,11 +40,11 @@ void fillcubeborder(t_runtime *r)
                     }
                 }
             }
-            x += 100;
+            x += 64;
             j++;
         }
         i++;
-        y += 100;
+        y += 64;
     }
 }
 
@@ -50,10 +52,15 @@ void playerendering2d(void  *param)
 {
     t_runtime  *r;
     r = param;
-    fillcubeborder(r);
-     for (int i = r->player.pos.y + 1; i < r->player.pos.y + PLAYER_SIZE; i++) {
+    //fillcubeborder(r);
+    /*for (int i = r->player.pos.y + 1; i < r->player.pos.y + PLAYER_SIZE; i++) {
         for (int j = r->player.pos.x  - 1; j > r->player.pos.x - PLAYER_SIZE; j--) {
             my_mlx_put_pixel(r->img, j, i, get_rgba(255, 0, 0, 255));
+        }
+    }*/
+    for (int i = 0; i < 320; i++) {
+        for (int j = 0 ; j < 200; j++) {
+            my_mlx_put_pixel(r->img, i, j, get_rgba(255, 0, 0, 255));
         }
     }
     calcul_line_intery(r);
@@ -76,10 +83,13 @@ void playerendering2d(void  *param)
 void fov_rendering(t_runtime *r)
 {
     float tmp_rad;
+    float i = 0;
     r->line.rad_fov= r->player.pdir_v - r->player.FOV/2;
     tmp_rad = r->line.rad_fov;
     while (tmp_rad <= r->player.pdir_v + r->player.FOV/2)
     {
+        //printf("i = %d\n", i);
+        i++;
         tmp_rad = r->line.rad_fov;
         if (r->line.rad_fov < 0)
         {
@@ -107,9 +117,12 @@ void fov_rendering(t_runtime *r)
         r->line.end_defov.x = r->line.end_fov.x;
         r->line.end_defov.y = r->line.end_fov.y;
        // printf("y = %f, x = %f\n ", r->line.end_defov.y, r->line.end_defov.x);
-        my_draw_line(r);
+       // my_draw_line(r);
         r->line.rad_fov = tmp_rad;
-        r->line.rad_fov += 0.01875;
+        r->line.rad_fov += 0.003290;
+        r->line.dist = calucl_dist(r->line.start_fov.x, r->line.end_defov.x, r->line.start_fov.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v);
+        printf("ray%f = %f\n", i, r->line.dist);
+        playerrendering3D(r, i);
     }
 }
 //faire un tableau pour tester les deplacement car sinon ca peut buger giltch hors map
@@ -128,10 +141,10 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         if(r->player.dir == DIR_A)
             r->player.pdir -= PI;
         r->player.dir = DIR_D;
-        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 25)
+        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 10)
         {
-            r->player.pos.x += roundf((float)(5* cos(r->player.pdir)));
-            r->player.pos.y -= roundf((float)(5 * sin(r->player.pdir)));
+            r->player.pos.x += roundf((float)(cos(r->player.pdir)));
+            r->player.pos.y -= roundf((float)(sin(r->player.pdir)));
         }
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_W))
@@ -143,10 +156,10 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         if(r->player.dir == DIR_D)
             r->player.pdir -= PI/2;
         r->player.dir = DIR_W;
-        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 25)
+        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 10)
         {
-            r->player.pos.x += roundf((float)(5* cos(r->player.pdir)));
-            r->player.pos.y -= roundf((float)(5 * sin(r->player.pdir)));
+            r->player.pos.x += roundf((float)(cos(r->player.pdir)));
+            r->player.pos.y -= roundf((float)(sin(r->player.pdir)));
         }
     }   
     if(mlx_is_key_down(r->mlx, MLX_KEY_S))
@@ -158,10 +171,10 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         if(r->player.dir == DIR_D)
             r->player.pdir += PI/2;
         r->player.dir = DIR_S;
-        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 25)
+        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 10)
         {
-            r->player.pos.x += roundf((float)(5* cos(r->player.pdir)));
-            r->player.pos.y -= roundf((float)(5 * sin(r->player.pdir)));
+            r->player.pos.x += roundf((float)(cos(r->player.pdir)));
+            r->player.pos.y -= roundf((float)(sin(r->player.pdir)));
         }
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_A))
@@ -173,34 +186,34 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         if(r->player.dir == DIR_D)
             r->player.pdir += PI;
         r->player.dir = DIR_A;
-        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 25)
+        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 10)
         {
-            r->player.pos.x += roundf((float)(5* cos(r->player.pdir)));
-            r->player.pos.y -= roundf((float)(5 * sin(r->player.pdir)));
+            r->player.pos.x += roundf((float)(cos(r->player.pdir)));
+            r->player.pos.y -= roundf((float)(sin(r->player.pdir)));
         }
     }
-    if(mlx_is_key_down(r->mlx, MLX_KEY_RIGHT))
+    if(mlx_is_key_down(r->mlx, MLX_KEY_LEFT))
     {
-        r->player.pdir -= 0.0174533 * 5;
+        r->player.pdir -= 0.0174533 * 2;
         if(r->player.pdir < 0)
 		{
 			r->player.pdir += 2 * PI;
 		}
-        r->player.pdir_v -= 0.0174533 * 5;
+        r->player.pdir_v -= 0.0174533 * 2;
         if(r->player.pdir_v < 0)
 		{
             r->player.pdir_v += 2 * PI;
 		}
 
     }
-    if(mlx_is_key_down(r->mlx, MLX_KEY_LEFT))
+    if(mlx_is_key_down(r->mlx, MLX_KEY_RIGHT))
     {
-       r->player.pdir += 0.0174533 * 5;
+       r->player.pdir += 0.0174533 * 2;
         if(r->player.pdir > 2 * PI)
 		{
 			r->player.pdir -= 2 * PI;
 		}
-        r->player.pdir_v += 0.0174533 * 5;
+        r->player.pdir_v += 0.0174533 * 2;
         if(r->player.pdir_v > 2 * PI)
 		{
 			r->player.pdir_v -= 2 * PI;

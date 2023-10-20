@@ -1,5 +1,12 @@
 #include "../includes/Cub3D.h"
 
+float calucl_dist(float x0, float x1, float y0, float y1)
+{
+	float dist;
+	dist = sqrt(((x1 - x0) * (x1 - x0)) + ((y1 - y0) * (y1 - y0)));
+	return (dist);
+}
+
 char *ft_strdup(char	*dst, char *src)
 {
 	int	i;

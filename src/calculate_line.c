@@ -15,9 +15,9 @@ void calcul_line_interx(void *param)
     float tmpy = r->line.start.y;
     r->line.end.x = r->line.start.x;
     r->line.end.y = r->line.start.y;
-    while (r->map.map[(int)r->line.end.y / 100][(int)r->line.end.x / 100] != '1')
+    while (r->map.map[(int)r->line.end.y / CASE_SIZE][(int)r->line.end.x / CASE_SIZE] != '1')
     {
-        if (r->player.pdir > PI && r->player.pdir < 2 * PI)
+        if (r->player.pdir >= PI && r->player.pdir <= 2 * PI)
         {
             r->line.end.y = floor(tmpy / CASE_SIZE) * CASE_SIZE + CASE_SIZE;
         }
@@ -32,7 +32,7 @@ void calcul_line_interx(void *param)
         r->line.end.x = tmpx + (tmpy - r->line.end.y) / tan(r->player.pdir);
         tmpx = r->line.end.x;
         tmpy = r->line.end.y;
-        if ((int)(tmpy / 100) >= charlen(r->map.map) || (int)(tmpx / 100) >= my_strlen(r->map.map[(int)(tmpy / 100)]) || (int)tmpx <= 0 || (int)tmpy <= 0)
+        if ((int)(tmpy / CASE_SIZE) >= charlen(r->map.map) || (int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)(tmpy / CASE_SIZE)]) || (int)tmpx <= 0 || (int)tmpy <= 0)
         {
             r->line.end.x = r->line.start.x;
             r->line.end.y = r->line.start.y;
@@ -54,7 +54,7 @@ void calcul_line_intery(void *param)
     float tmpy = r->line.start.y;
     r->line.end_v.x = r->line.start.x;
     r->line.end_v.y = r->line.start.y;
-    while (r->map.map[(int)r->line.end_v.y / 100][(int)r->line.end_v.x / 100] != '1')
+    while (r->map.map[(int)r->line.end_v.y / CASE_SIZE][(int)r->line.end_v.x / CASE_SIZE] != '1')
     {
         if ((r->player.pdir < PI / 2 && r->player.pdir > 0) || (r->player.pdir > 3 * PI/2))
         {
@@ -70,7 +70,7 @@ void calcul_line_intery(void *param)
         r->line.end_v.y = tmpy + (tmpx - r->line.end_v.x) * tan(r->player.pdir);
         tmpx = r->line.end_v.x;
         tmpy = r->line.end_v.y;
-        if ((int)tmpx <= 0 || (int)tmpy <= 0 || (int)(tmpy / 100) >= charlen(r->map.map) || (int)(tmpx / 100) >= my_strlen(r->map.map[(int)tmpy / 100]))
+        if ((int)tmpx <= 0 || (int)tmpy <= 0 || (int)(tmpy / CASE_SIZE) >= charlen(r->map.map) || (int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)tmpy / CASE_SIZE]))
         {
             r->line.end_v.x = r->line.start.x;
             r->line.end_v.y = r->line.start.y;
@@ -97,13 +97,13 @@ void calcul_line_fovy(void *param)
     {
         r->line.rad_fov += 2 * PI;
     } */ 
-    while (r->map.map[(int)r->line.end_fov.y / 100][(int)r->line.end_fov.x / 100] != '1')
+    while (r->map.map[(int)r->line.end_fov.y / CASE_SIZE][(int)r->line.end_fov.x / CASE_SIZE] != '1')
     {
-        if ((r->line.rad_fov < PI / 2 && r->line.rad_fov >= 0) || (r->line.rad_fov > 3 * PI/2 && r->line.rad_fov <= 2 *PI))
+        if ((r->line.rad_fov <= PI / 2 && r->line.rad_fov >= 0) || (r->line.rad_fov >= 3 * PI/2 && r->line.rad_fov <= 2 *PI))
         {
             r->line.end_fov.x = floor(tmpx / CASE_SIZE) * CASE_SIZE +CASE_SIZE;
         }
-        else if (r->line.rad_fov > PI/ 2 && r->line.rad_fov < 3 * PI/2)
+        else if (r->line.rad_fov >= PI/ 2 && r->line.rad_fov <= 3 * PI/2)
         {
             r->line.end_fov.x = floor(tmpx / CASE_SIZE) * CASE_SIZE - 1;
         }
@@ -114,7 +114,7 @@ void calcul_line_fovy(void *param)
         r->line.end_fov.y = tmpy + (tmpx - r->line.end_fov.x) * tan(r->line.rad_fov);
         tmpx = r->line.end_fov.x;
         tmpy = r->line.end_fov.y;
-        if ((int)tmpx <= 0 || (int)tmpy <= 0 || (int)(tmpy / 100) >= charlen(r->map.map) ||(int)(tmpx / 100) >= my_strlen(r->map.map[(int)tmpy / 100]))
+        if ((int)tmpx <= 0 || (int)tmpy <= 0 || (int)(tmpy / CASE_SIZE) >= charlen(r->map.map) ||(int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)tmpy / CASE_SIZE]))
         {
             //printf("je lvaais dit vrm\n");
             r->line.end_fov.x = r->line.start_fov.x;
@@ -134,13 +134,13 @@ void calcul_line_fovx(void *param)
     float tmpy = r->line.start_fov.y;
     r->line.end_fov2.x = r->line.start_fov.x;
     r->line.end_fov2.y = r->line.start_fov.y;
-    while (r->map.map[(int)r->line.end_fov2.y / 100][(int)r->line.end_fov2.x / 100] != '1')
+    while (r->map.map[(int)r->line.end_fov2.y / CASE_SIZE][(int)r->line.end_fov2.x / CASE_SIZE] != '1')
     {
-        if (r->line.rad_fov >= PI && r->line.rad_fov < 2 * PI)
+        if (r->line.rad_fov >= PI && r->line.rad_fov <= 2 * PI)
         {
             r->line.end_fov2.y = floor(tmpy / CASE_SIZE) * CASE_SIZE + CASE_SIZE;
         }
-        else if (r->line.rad_fov > 0 && r->line.rad_fov <= PI)
+        else if (r->line.rad_fov >= 0 && r->line.rad_fov <= PI)
         {
             r->line.end_fov2.y = floor(tmpy / CASE_SIZE) * CASE_SIZE - 1;
         }
@@ -152,7 +152,7 @@ void calcul_line_fovx(void *param)
         r->line.end_fov2.x = tmpx + (tmpy - r->line.end_fov2.y) / tan(r->line.rad_fov);
         tmpx = r->line.end_fov2.x;
         tmpy = r->line.end_fov2.y;
-        if ((int)(tmpx / 100) >= my_strlen(r->map.map[(int)(tmpy / 100)]) || (int)tmpx <= 0 || (int)tmpy <= 0)
+        if ((int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)(tmpy / CASE_SIZE)]) || (int)tmpx <= 0 || (int)tmpy <= 0)
         {
             //printf("je lvaais dit\n");
             r->line.end_fov2.x = r->line.start_fov.x;

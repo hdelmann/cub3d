@@ -16,7 +16,7 @@ enum {
 #include "../getnext/get_next_line.h"
 
 #define PLAYER_SIZE 10
-#define CASE_SIZE 100
+#define CASE_SIZE 64
 #define PI 3.141592653589793238462643383279502884197
 #define HEIGHT 1080
 #define WIDTH 1920
@@ -38,6 +38,7 @@ typedef struct player
 
 typedef struct s_line
 {
+    float dist;
     t_point start;
     t_point end;
     float   rad_raystart;
@@ -95,11 +96,13 @@ int get_rgba(int r, int g, int b, int a);
 void fillcubeborder(t_runtime *r);
 void playerendering2d(void *param);
 void my_keyhook(mlx_key_data_t keydata, void *param);
+float calucl_dist(float x0, float x1, float y0, float y1);
 void calcul_line_interx(void *param);
 void calcul_line_intery(void *param);
 void my_draw_line(t_runtime *r);
+void my_draw_line_3D(float x0, float y0, float y1, t_runtime *r);
 float my_fabs(float i);
-void    playerrendering3D(void *param);
+void    playerrendering3D(void *param, float xray);
 int charlen(char** tableau);
 int my_strlen(const char* chaine);
 void fov_rendering(t_runtime *r);

@@ -1,8 +1,8 @@
 #include "../includes/Cub3D.h"
 void init_tmp(t_runtime *r)
 {
-    r->player.pos.x = 255;
-    r->player.pos.y = 245;
+    r->player.pos.x = 150;
+    r->player.pos.y = 150;
     r->player.pdir = PI/2;
     r->player.pdir_v = PI/2;
     r->player.dir = DIR_W;
@@ -34,7 +34,7 @@ int main(int ac, char **av)
         r.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", true);
         if (!r.mlx) 
             return (-1);
-        r.img = mlx_new_image(r.mlx, WIDTH, HEIGHT);
+        r.img = mlx_new_image(r.mlx, 320, 200);
         if (!r.img || (mlx_image_to_window(r.mlx, r.img, 0, 0) < 0))
 		    return(-1);
         init_tmp(&r);
