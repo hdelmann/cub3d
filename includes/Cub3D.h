@@ -8,6 +8,11 @@ enum {
     DIR_A,
     DIR_D,
 };
+
+enum {
+    HOR,
+    VER,
+};
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -39,6 +44,7 @@ typedef struct player
 typedef struct s_line
 {
     float dist;
+    int ort;
     t_point start;
     t_point end;
     float   rad_raystart;
@@ -52,6 +58,7 @@ typedef struct s_line
     t_point end_fov;
     t_point end_fov2;
     t_point end_defov;
+    float *tab_dist;
     float z;
 }   t_line;
 
@@ -88,6 +95,7 @@ void    map_fill(t_runtime *r, int fd);
 char	*ft_strdup_f(char *src);
 void my_draw_line_fov(t_runtime *r);
 char	**ft_realloc2(char **map, int i);
+float* myReallocfloat(float *ptr, int Newsize);
 void calcul_line_fovx(void *param);
 void calcul_line_fovy(void *param);
 char *replace_n_to_r(char *line);
@@ -97,8 +105,8 @@ void fillcubeborder(t_runtime *r);
 void playerendering2d(void *param);
 void my_keyhook(mlx_key_data_t keydata, void *param);
 float calucl_dist(float x0, float x1, float y0, float y1);
-void calcul_line_interx(void *param);
-void calcul_line_intery(void *param);
+void calcul_line_interx(void *param, float x0, float y0);
+void calcul_line_intery(void *param, float x0, float y0);
 void my_draw_line(t_runtime *r);
 void my_draw_line_3D(float x0, float y0, float y1, t_runtime *r);
 float my_fabs(float i);

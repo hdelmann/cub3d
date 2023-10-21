@@ -1,5 +1,41 @@
 #include "../includes/Cub3D.h"
 
+int test_charset(char **c)
+{
+	int k = 0;
+	for (int j = 0; c[j] != NULL; j++)
+	{
+		for (int i = 0; c[j][i] != '\0'; i++)
+		{
+			if (c[j][i] == 'N' || c[j][i] == 'S' || c[j][i] == 'E' || c[j][i] == 'W')
+				k++;
+			if (k > 1)
+				return (0);
+			if (c[j][i] != 'N' && c[j][i] != 'S' && c[j][i] != 'E' && c[j][i] != 'W' && c[j][i] != '0' && c[j][i] != '1')
+				return(0);
+		}
+	}
+	if (k == 0)
+		return(0);
+	return (1);
+}
+
+
+
+float* myReallocfloat(float *ptr, int Newsize) {
+	float *dst;
+	int i = 0;
+	dst = malloc(sizeof(float) * Newsize);
+	while(ptr[i] != -1)
+	{
+		dst[i] = ptr[i];
+		i++;
+	}
+	dst[i] = -1;
+	free(ptr);
+	return(dst);
+}
+
 float calucl_dist(float x0, float x1, float y0, float y1)
 {
 	float dist;

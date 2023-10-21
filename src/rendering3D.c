@@ -5,14 +5,17 @@ void    playerrendering3D(void *param, float xray){
 
     float height;
     r = param;
-    printf("ray%f = %f\n", xray, r->line.dist);
-    height = (64.0/r->line.dist) * (960.0/tan(30.0));
-    printf("height = %f\n", height);
+    //printf("ray%f = %f\n", xray, r->line.dist);
+    height = fabs((64.0/r->line.dist) * (960.0/tan(30.0)));
+    //printf("height = %f\n", height);
     float y0 = 540.0 - (height / 2.0);
     float y1 = 540.0 + (height / 2.0);
-    //printf("y0 = %f, y1 = %f\n", y0, y1);
     //printf("x0 = %f, x1 = %f\n", xray, xray);
-
+    if (y0 < 0)
+        y0 = 0;
+    if (y1 > HEIGHT)
+        y1 = HEIGHT;
+    //printf("y0 = %f, y1 = %f\n", y0, y1);
     my_draw_line_3D(xray, y0, y1, r);
 
 }
@@ -29,9 +32,14 @@ void my_draw_line_3D(float x0, float y0, float y1, t_runtime *r)
     float sx = (xsta < xend) ? 1 : -1;
     float sy = (ysta < yend) ? 1 : -1;
     float err = dx - dy;
-    while (1 && xsta <= WIDTH && ysta <= HEIGHT)
+    while (1 && xsta <= WIDTH && ysta <= HEIGHT && xsta >= 0 && ysta >= 0)
     {
-        my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 0, 255));
+        if (r->line.ort == VER)
+            my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 0, 255));
+        else if (r->line.ort == HOR)
+            my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 155, 0, 255));
+        
+        //my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 155, 0, 255));
         if (roundf(xsta) == roundf(xend) && roundf(ysta) == roundf(yend))
             break;
         e2 = 2* err;

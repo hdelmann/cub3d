@@ -1,6 +1,17 @@
 #include "../includes/Cub3D.h"
 
-
+int test_dist(float *tab, int dist)
+{
+    for (int i = 0; tab[i] != -1 ; i++)
+    {
+        if (tab[i] < dist)
+        {
+            printf("dist= %f\n", tab[i]);
+            return (0);
+        }
+    }
+    return (1);
+}
 
 void fillcubeborder(t_runtime *r)
 {
@@ -48,6 +59,60 @@ void fillcubeborder(t_runtime *r)
     }
 }
 
+float *ft_colision(t_runtime *r, float x0, float y0)
+{
+    float tmp_rad;
+    float k = 0;
+    float *dist_tab;
+    //float dist;
+    r->line.rad_raystart= r->player.pdir - r->player.FOV/4;
+    tmp_rad = r->line.rad_raystart;
+    dist_tab = malloc(sizeof(float));
+    dist_tab[0] = -1;
+    while (k < 6)
+    {
+        dist_tab = myReallocfloat(dist_tab, k + 2);
+        //printf("i = %d\n", i);
+        tmp_rad = r->line.rad_raystart;
+        if (r->line.rad_raystart < 0)
+        {
+            r->line.rad_fov += 2 * PI; 
+        }
+        else if (r->line.rad_raystart > (2 * PI))
+        {
+            r->line.rad_fov -= 2 * PI; 
+        }
+        //printf("rad2 = %f\n", r->line.rad_in);
+        calcul_line_interx(r, x0, y0);
+        calcul_line_intery(r, x0, y0);
+        if (r->line.end.x == r->line.start.x && r->line.end.y == r->line.start.y)
+        { 
+            r->line.end.x = r->line.end_v.x;
+            r->line.end.y = r->line.end_v.y;
+        }
+        if ((r->line.end_v.x == r->line.start_v.x && r->line.end_v.y == r->line.start_v.y))
+        {}
+        else if  (sqrt(((r->line.end.x - r->line.start.x) * (r->line.end.x - r->line.start.x)) + ((r->line.end.y - r->line.start.y) * (r->line.end.y - r->line.start.y))) > sqrt(((r->line.end_v.x - r->line.start_v.x) * (r->line.end_v.x - r->line.start_v.x)) + ((r->line.end_v.y - r->line.start_v.y) * (r->line.end_v.y - r->line.start_v.y))))
+        {
+            r->line.end.x = r->line.end_v.x;
+            r->line.end.y = r->line.end_v.y;
+        }
+        r->line.end_def.x = r->line.end.x;
+        r->line.end_def.y = r->line.end.y;
+        //printf("y = %f, x = %f\n ", r->line.end_defov.y, r->line.end_defov.x);
+       // my_draw_line(r);
+        r->line.rad_raystart = tmp_rad;
+        r->line.rad_raystart += r->player.FOV/8;
+        //dist = calucl_dist(x0, r->line.end_def.x, y0, r->line.end_def.y) * cos(r->line.rad_raystart - r->player.pdir); 
+        dist_tab[(int)k] = calucl_dist(x0, r->line.end_def.x, y0, r->line.end_def.y) * cos(r->line.rad_raystart - r->player.pdir);
+        //
+       // printf("distt = %f\n", r->line.tab_dist[(int)k]);
+        k++;
+        dist_tab[(int)k] = -1;
+    }
+    return(dist_tab);
+}
+
 void playerendering2d(void  *param)
 {
     t_runtime  *r;
@@ -58,25 +123,30 @@ void playerendering2d(void  *param)
             my_mlx_put_pixel(r->img, j, i, get_rgba(255, 0, 0, 255));
         }
     }*/
-    for (int i = 0; i < WIDTH; i++) {
-        for (int j = 0 ; j < HEIGHT; j++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(255, 0, 0, 255));
+    int i;
+    int j;
+    for (i = 0; i < WIDTH; i++) {
+        for (j = 0 ; j < HEIGHT/2; j++) {
+            my_mlx_put_pixel(r->img, i, j, get_rgba(20, 20, 20, 255));
         }
     }
-    calcul_line_intery(r);
-    calcul_line_interx(r);
-    if (r->line.end.x == r->line.start.x && r->line.end.y == r->line.start.y)
-    {        
-        r->line.end.x = r->line.end_v.x;
-        r->line.end.y = r->line.end_v.y;
+    for (i = 0;i < WIDTH; i += 2) {
+        for (j = HEIGHT/2 ;j < HEIGHT; j++) {
+            my_mlx_put_pixel(r->img, i, j, get_rgba(64, 64, 64, 255));
+        }
     }
-    else if  (!(r->line.end_v.x == r->line.start_v.x && r->line.end_v.y == r->line.start_v.y) && sqrt(((r->line.end.x - r->line.start.x) * (r->line.end.x - r->line.start.x)) + ((r->line.end.y - r->line.start.y) * (r->line.end.y - r->line.start.y))) > sqrt(((r->line.end_v.x - r->line.start.x) * (r->line.end_v.x - r->line.start.x)) + ((r->line.end_v.y - r->line.start.y) * (r->line.end_v.y - r->line.start.y))))
-    {
-        r->line.end.x = r->line.end_v.x;
-        r->line.end.y = r->line.end_v.y;
+    for (i = 1;i < WIDTH; i += 2) {
+        for (j = HEIGHT/2 ;j < HEIGHT; j++) {
+            my_mlx_put_pixel(r->img, i, j, get_rgba(128, 128, 128, 255));
+        }
     }
-    r->line.end_def.x = r->line.end.x;
-    r->line.end_def.y = r->line.end.y;
+    for (j = HEIGHT/2;j < HEIGHT; j += 2) {
+        for (i = WIDTH ;i < WIDTH; i++) {
+            my_mlx_put_pixel(r->img, i, j, get_rgba(128, 128, 128, 255));
+        }
+    }
+
+    
     fov_rendering(r);
 }
 
@@ -88,8 +158,8 @@ void fov_rendering(t_runtime *r)
     tmp_rad = r->line.rad_fov;
     while (tmp_rad <= r->player.pdir_v + r->player.FOV/2)
     {
+        r->line.ort = HOR;
         //printf("i = %d\n", i);
-        i++;
         tmp_rad = r->line.rad_fov;
         if (r->line.rad_fov < 0)
         {
@@ -103,7 +173,8 @@ void fov_rendering(t_runtime *r)
         calcul_line_fovx(r);
         calcul_line_fovy(r);
         if (r->line.end_fov.x == r->line.start_fov.x && r->line.end_fov.y == r->line.start_fov.y)
-        {  
+        { 
+            r->line.ort = VER;
             r->line.end_fov.x = r->line.end_fov2.x;
             r->line.end_fov.y = r->line.end_fov2.y;
         }
@@ -111,6 +182,7 @@ void fov_rendering(t_runtime *r)
         {}
         else if  (sqrt(((r->line.end_fov.x - r->line.start_fov.x) * (r->line.end_fov.x - r->line.start_fov.x)) + ((r->line.end_fov.y - r->line.start_fov.y) * (r->line.end_fov.y - r->line.start_fov.y))) > sqrt(((r->line.end_fov2.x - r->line.start_fov.x) * (r->line.end_fov2.x - r->line.start_fov.x)) + ((r->line.end_fov2.y - r->line.start_fov.y) * (r->line.end_fov2.y - r->line.start_fov.y))))
         {
+            r->line.ort = VER;
             r->line.end_fov.x = r->line.end_fov2.x;
             r->line.end_fov.y = r->line.end_fov2.y;
         }
@@ -121,85 +193,98 @@ void fov_rendering(t_runtime *r)
         r->line.rad_fov = tmp_rad;
         r->line.rad_fov += 0.0005457;
         r->line.dist = calucl_dist(r->line.start_fov.x, r->line.end_defov.x, r->line.start_fov.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v); 
-        //printf("ray%f = %f\n", i, r->line.dist);
         playerrendering3D(r, i);
+        i++;
         }
 }
 //faire un tableau pour tester les deplacement car sinon ca peut buger giltch hors map
 void my_keyhook(mlx_key_data_t keydata, void *param)
 {
     t_runtime *r;
-
+    float *dist_tab;
     r = param;
     (void)keydata;
     if(mlx_is_key_down(r->mlx, MLX_KEY_D))
     {   
-        if(r->player.dir == DIR_W)
+        /*if(r->player.dir == DIR_W)
             r->player.pdir += PI/2;
         if(r->player.dir == DIR_S)
             r->player.pdir -= PI/2;        
         if(r->player.dir == DIR_A)
             r->player.pdir -= PI;
-        r->player.dir = DIR_D;
-        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 10)
+        r->player.dir = DIR_D;*/
+        r->player.pdir += PI/2;
+        dist_tab = ft_colision(r, r->line.start.x + ((float)(cos(r->player.pdir))), r->line.start.y - ((float)(sin(r->player.pdir))));
+        r->player.pdir -= PI/2;
+        if (test_dist(dist_tab, 8) == 1)
         {
-            r->player.pos.x += roundf((float)(cos(r->player.pdir)));
-            r->player.pos.y -= roundf((float)(sin(r->player.pdir)));
+            r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir - PI/2)));
+            r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir - PI/2)));
         }
+        //free(dist_tab);
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_W))
     {
-       if(r->player.dir == DIR_S)
+        /*if(r->player.dir == DIR_S)
             r->player.pdir -= PI;
         if(r->player.dir == DIR_A)
             r->player.pdir += PI/2;        
         if(r->player.dir == DIR_D)
             r->player.pdir -= PI/2;
-        r->player.dir = DIR_W;
-        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 10)
+        r->player.dir = DIR_W;*/
+        dist_tab = ft_colision(r, r->line.start.x + ((float)(cos(r->player.pdir_v))), r->line.start.y - ((float)(sin(r->player.pdir_v))));
+        if (test_dist(dist_tab, 8) == 1)
         {
-            r->player.pos.x += roundf((float)(cos(r->player.pdir)));
-            r->player.pos.y -= roundf((float)(sin(r->player.pdir)));
+            
+            r->player.pos.x += 0.5 * (float)(cos(r->player.pdir_v));
+            r->player.pos.y -= 0.5 * (float)(sin(r->player.pdir_v));
         }
+       // free(dist_tab);
     }   
     if(mlx_is_key_down(r->mlx, MLX_KEY_S))
     {
-        if(r->player.dir == DIR_W)
+        /*if(r->player.dir == DIR_W)
             r->player.pdir += PI;
         if(r->player.dir == DIR_A)
             r->player.pdir -= PI/2;        
         if(r->player.dir == DIR_D)
             r->player.pdir += PI/2;
-        r->player.dir = DIR_S;
-        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 10)
+        r->player.dir = DIR_S;*/
+        r->player.pdir += PI;
+        dist_tab = ft_colision(r, r->line.start.x + ((float)(cos(r->player.pdir))), r->line.start.y - ((float)(sin(r->player.pdir))));
+        r->player.pdir -= PI;
+        if (test_dist(dist_tab, 8) == 1)
         {
-            r->player.pos.x += roundf((float)(cos(r->player.pdir)));
-            r->player.pos.y -= roundf((float)(sin(r->player.pdir)));
+            r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir)));
+            r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir)));
         }
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_A))
     {
-        if(r->player.dir == DIR_W)
+        /*if(r->player.dir == DIR_W)
             r->player.pdir -= PI/2;
         if(r->player.dir == DIR_S)
             r->player.pdir += PI/2;        
         if(r->player.dir == DIR_D)
             r->player.pdir += PI;
-        r->player.dir = DIR_A;
-        if (sqrt(((r->line.end_def.x - r->player.pos.x) * (r->line.end_def.x - r->player.pos.x)) + ((r->line.end_def.y - r->player.pos.y) * (r->line.end_def.y - r->player.pos.y))) > 10)
+        r->player.dir = DIR_A;*/
+        r->player.pdir -= PI/2;
+        dist_tab = ft_colision(r, r->line.start.x + ((float)(cos(r->player.pdir))), r->line.start.y - ((float)(sin(r->player.pdir))));
+        r->player.pdir += PI/2;
+        if (test_dist(dist_tab, 8) == 1)
         {
-            r->player.pos.x += roundf((float)(cos(r->player.pdir)));
-            r->player.pos.y -= roundf((float)(sin(r->player.pdir)));
+            r->player.pos.x += 0.5 * ((float)(cos(r->player.pdir - PI/2)));
+            r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir - PI/2)));
         }
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_LEFT))
     {
-        r->player.pdir -= 0.0174533 * 2;
+        r->player.pdir -= 0.0174533;
         if(r->player.pdir < 0)
 		{
 			r->player.pdir += 2 * PI;
 		}
-        r->player.pdir_v -= 0.0174533 * 2;
+        r->player.pdir_v -= 0.0174533;
         if(r->player.pdir_v < 0)
 		{
             r->player.pdir_v += 2 * PI;
@@ -208,12 +293,12 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_RIGHT))
     {
-       r->player.pdir += 0.0174533 * 2;
+       r->player.pdir += 0.0174533;
         if(r->player.pdir > 2 * PI)
 		{
 			r->player.pdir -= 2 * PI;
 		}
-        r->player.pdir_v += 0.0174533 * 2;
+        r->player.pdir_v += 0.0174533;
         if(r->player.pdir_v > 2 * PI)
 		{
 			r->player.pdir_v -= 2 * PI;

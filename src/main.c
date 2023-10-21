@@ -1,8 +1,8 @@
 #include "../includes/Cub3D.h"
 void init_tmp(t_runtime *r)
 {
-    r->player.pos.x = 150;
-    r->player.pos.y = 150;
+    r->player.pos.x = 96;
+    r->player.pos.y = 96;
     r->player.pdir = PI/2;
     r->player.pdir_v = PI/2;
     r->player.dir = DIR_W;
@@ -15,6 +15,7 @@ void init_tmp(t_runtime *r)
     r->line.end.x = r->line.start.x;
     r->line.end.y = r->line.start.y;
     r->player.FOV = PI/3;
+    r->line.tab_dist = malloc(1920 * sizeof(float));
 }
 
 int main(int ac, char **av)
