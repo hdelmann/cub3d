@@ -67,7 +67,7 @@ float *ft_colision(t_runtime *r, float x0, float y0)
     //float dist;
     r->line.rad_raystart= r->player.pdir - r->player.FOV/4;
     tmp_rad = r->line.rad_raystart;
-    dist_tab = malloc(sizeof(float));
+    dist_tab = malloc(sizeof(float) + 1);
     dist_tab[0] = -1;
     while (k < 6)
     {
@@ -127,7 +127,7 @@ void playerendering2d(void  *param)
     int j;
     for (i = 0; i < WIDTH; i++) {
         for (j = 0 ; j < HEIGHT/2; j++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(20, 20, 20, 255));
+            my_mlx_put_pixel(r->img, i, j, get_rgba(0, 205, 205, 255));
         }
     }
     for (i = 0;i < WIDTH; i += 2) {
@@ -221,7 +221,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
             r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir - PI/2)));
             r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir - PI/2)));
         }
-        //free(dist_tab);
+        free(dist_tab);
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_W))
     {
@@ -239,7 +239,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
             r->player.pos.x += 0.5 * (float)(cos(r->player.pdir_v));
             r->player.pos.y -= 0.5 * (float)(sin(r->player.pdir_v));
         }
-       // free(dist_tab);
+        free(dist_tab);
     }   
     if(mlx_is_key_down(r->mlx, MLX_KEY_S))
     {
@@ -258,6 +258,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
             r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir)));
             r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir)));
         }
+        free(dist_tab);
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_A))
     {
@@ -276,6 +277,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
             r->player.pos.x += 0.5 * ((float)(cos(r->player.pdir - PI/2)));
             r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir - PI/2)));
         }
+        free(dist_tab);
     }
     if(mlx_is_key_down(r->mlx, MLX_KEY_LEFT))
     {

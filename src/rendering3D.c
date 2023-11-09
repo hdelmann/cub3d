@@ -34,11 +34,12 @@ void my_draw_line_3D(float x0, float y0, float y1, t_runtime *r)
     float err = dx - dy;
     while (1 && xsta <= WIDTH && ysta <= HEIGHT && xsta >= 0 && ysta >= 0)
     {
-        if (r->line.ort == VER)
+        if (r->line.ort == VER && roundf(ysta) != roundf(yend))
             my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 0, 255));
-        else if (r->line.ort == HOR)
+        else if (r->line.ort == HOR && roundf(ysta) != roundf(yend))
             my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 155, 0, 255));
-        
+        else if (roundf(ysta) == roundf(yend) || roundf(ysta) == roundf(yend) - 1 || roundf(xsta) == 0 || roundf(xsta) == 1)
+            my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 0, 0, 255));
         //my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 155, 0, 255));
         if (roundf(xsta) == roundf(xend) && roundf(ysta) == roundf(yend))
             break;
