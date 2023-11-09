@@ -25,6 +25,17 @@ enum {
 #define PI 3.141592653589793238462643383279502884197
 #define HEIGHT 1080
 #define WIDTH 1920
+#define CHARSET "10NEWS"
+#define PCHARSET "NEWS"
+#define FLR 0
+#define CEIL 1
+
+enum Textures{
+    NO,
+    SO,
+    EA,
+    WE
+};
 
 typedef struct point
 {
@@ -65,6 +76,7 @@ typedef struct s_line
 typedef struct s_map
 {
     char **map;
+    char **textures;
     int colums;
     int lines;
 }   t_map;
@@ -73,6 +85,18 @@ typedef struct isomet
     float   x_iso;
     float   y_iso;
 }   t_isomet;
+
+typedef struct s_txt
+{
+    char            *path;
+    mlx_image_t     *walltxt;
+    unsigned int    c_red;
+    unsigned int    c_green;
+    unsigned int    c_blue;
+    unsigned int    trnpcy;
+}              t_txt;
+
+
 
 typedef struct runetime
 {
@@ -84,14 +108,25 @@ typedef struct runetime
     mlx_image_t *img;
     mlx_image_t *img3;
     t_isomet    iso;
-    
+    t_txt      txtrs[4];
+    t_txt      color[2];
+    char    *filename;
 }			t_runtime;
 
 
-int parsing_map(char **map);
-char *ft_strdup(char	*dst, char *src);
-int	is_line_empty(char *str);
-void    map_fill(t_runtime *r, int fd);
+void load_textures(t_runtime *r);
+char	**ft_split(char const *s, char c);
+int     parse_txt(t_runtime *r);
+void	file_parsing(t_runtime *r);
+int	    ft_strncmp(const char *s1, const char *s2, size_t n);
+int     check_map_t(char **map, char *valid_chars);
+int     filename_check(char *filename);
+int     check_invalid_mapt(t_runtime *r);
+int     is_map_surrounded(t_runtime *r);
+int     parsing_map(t_runtime *r);
+char    *ft_strdup(char	*dst, char *src);
+int	    is_line_empty(char *str);
+void     map_fill(t_runtime *r, int fd);
 char	*ft_strdup_f(char *src);
 void my_draw_line_fov(t_runtime *r);
 char	**ft_realloc2(char **map, int i);
@@ -99,6 +134,7 @@ float* myReallocfloat(float *ptr, int Newsize);
 void calcul_line_fovx(void *param);
 void calcul_line_fovy(void *param);
 char *replace_n_to_r(char *line);
+void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float texX);
 int my_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t color);
 int get_rgba(int r, int g, int b, int a);
 void fillcubeborder(t_runtime *r);
@@ -114,5 +150,7 @@ void    playerrendering3D(void *param, float xray);
 int charlen(char** tableau);
 int my_strlen(const char* chaine);
 void fov_rendering(t_runtime *r);
+void parsing(t_runtime *r, char *filename);
+void init_Ppos(t_runtime *r);
 
 #endif

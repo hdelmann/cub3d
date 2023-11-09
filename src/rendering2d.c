@@ -127,22 +127,22 @@ void playerendering2d(void  *param)
     int j;
     for (i = 0; i < WIDTH; i++) {
         for (j = 0 ; j < HEIGHT/2; j++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(0, 205, 205, 255));
+            my_mlx_put_pixel(r->img, i, j, get_rgba(r->color[CEIL].c_red, r->color[1].c_green, r->color[1].c_blue, 255));
         }
     }
     for (i = 0;i < WIDTH; i += 2) {
         for (j = HEIGHT/2 ;j < HEIGHT; j++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(64, 64, 64, 255));
+            my_mlx_put_pixel(r->img, i, j, get_rgba(255, 0, 0, 255));
         }
     }
     for (i = 1;i < WIDTH; i += 2) {
         for (j = HEIGHT/2 ;j < HEIGHT; j++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(128, 128, 128, 255));
+            my_mlx_put_pixel(r->img, i, j, get_rgba(r->color[FLR].c_red, r->color[0].c_green, r->color[0].c_blue, 255));
         }
     }
     for (j = HEIGHT/2;j < HEIGHT; j += 2) {
         for (i = WIDTH ;i < WIDTH; i++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(128, 128, 128, 255));
+            my_mlx_put_pixel(r->img, i, j, get_rgba(255, 0, 0, 255));
         }
     }
 
@@ -195,7 +195,7 @@ void fov_rendering(t_runtime *r)
         r->line.dist = calucl_dist(r->line.start_fov.x, r->line.end_defov.x, r->line.start_fov.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v); 
         playerrendering3D(r, i);
         i++;
-        }
+   }
 }
 //faire un tableau pour tester les deplacement car sinon ca peut buger giltch hors map
 void my_keyhook(mlx_key_data_t keydata, void *param)
@@ -204,6 +204,8 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
     float *dist_tab;
     r = param;
     (void)keydata;
+    if (mlx_is_key_down(r->mlx, MLX_KEY_ESCAPE))
+        exit(1);
     if(mlx_is_key_down(r->mlx, MLX_KEY_D))
     {   
         /*if(r->player.dir == DIR_W)
