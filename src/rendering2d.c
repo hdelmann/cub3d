@@ -32,14 +32,14 @@ void fillcubeborder(t_runtime *r)
         {
             for (int k = y; k <= y + CASE_SIZE; k++) {
                 for (int l = x; l >= x - CASE_SIZE; l--) {
-                    my_mlx_put_pixel(r->img, l, k, get_rgba(105, 105, 105, 255));
+                    my_mlx_put_pixel(r, l, k, get_rgba(105, 105, 105, 255));
                 }
             }
             if (r->map.map[i][j] == '1')
             {
                 for (int k = y + 2; k <= y + CASE_SIZE; k++) {
                     for (int l = x - 2; l >= x - CASE_SIZE; l--) {
-                        my_mlx_put_pixel(r->img, l, k, get_rgba(255, 255, 255, 255));
+                         my_mlx_put_pixel(r, l, k, get_rgba(255, 255, 255, 255));
                     }
                 }
             }
@@ -47,7 +47,7 @@ void fillcubeborder(t_runtime *r)
             {
                 for (int k = y + 2; k <= y + CASE_SIZE; k++) {
                     for (int l = x - 2; l >= x - CASE_SIZE; l--) {
-                        my_mlx_put_pixel(r->img, l, k, get_rgba(0, 0, 0, 255));
+                        my_mlx_put_pixel(r, l, k, get_rgba(0, 0, 0, 255));
                     }
                 }
             }
@@ -113,41 +113,44 @@ float *ft_colision(t_runtime *r, float x0, float y0)
     return(dist_tab);
 }
 
-void playerendering2d(void  *param)
+int playerendering2d(t_runtime  *r)
 {
-    t_runtime  *r;
-    r = param;
     //fillcubeborder(r);
     /*for (int i = r->player.pos.y + 1; i < r->player.pos.y + PLAYER_SIZE; i++) {
         for (int j = r->player.pos.x  - 1; j > r->player.pos.x - PLAYER_SIZE; j--) {
             my_mlx_put_pixel(r->img, j, i, get_rgba(255, 0, 0, 255));
         }
     }*/
+     //printf("SOMEONE KILL ME\n");
+    //mlx_hook(r->mlx_win, 2, 1L<<0, my_keyhook, &r);
+   // mlx_key_hook(r->mlx_win, my_keyhook, r);
+  // mlx_hook(r->mlx_win, 2, 1L<<0, my_keyhook, r);
+    //mlx_key_hook(r->mlx_win, my_keyhook, r);
     int i;
     int j;
     for (i = 0; i < WIDTH; i++) {
         for (j = 0 ; j < HEIGHT/2; j++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(r->color[CEIL].c_red, r->color[1].c_green, r->color[1].c_blue, 255));
+            my_mlx_put_pixel(r, i, j, get_rgba(r->color[CEIL].c_red, r->color[CEIL].c_green, r->color[CEIL].c_blue, 255));
         }
     }
     for (i = 0;i < WIDTH; i += 2) {
         for (j = HEIGHT/2 ;j < HEIGHT; j++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(255, 0, 0, 255));
+            my_mlx_put_pixel(r, i, j, get_rgba(255, 0, 0, 255));
         }
     }
     for (i = 1;i < WIDTH; i += 2) {
         for (j = HEIGHT/2 ;j < HEIGHT; j++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(r->color[FLR].c_red, r->color[0].c_green, r->color[0].c_blue, 255));
+            my_mlx_put_pixel(r, i, j, get_rgba(r->color[FLR].c_red, r->color[FLR].c_green, r->color[FLR].c_blue, 255));
         }
     }
     for (j = HEIGHT/2;j < HEIGHT; j += 2) {
         for (i = WIDTH ;i < WIDTH; i++) {
-            my_mlx_put_pixel(r->img, i, j, get_rgba(255, 0, 0, 255));
+            my_mlx_put_pixel(r, i, j, get_rgba(255, 0, 0, 255));
         }
     }
-
-    
     fov_rendering(r);
+    mlx_put_image_to_window(r->mlx, r->mlx_win, r->img.img, 0, 0);
+    return(0);
 }
 
 void fov_rendering(t_runtime *r)
@@ -195,18 +198,22 @@ void fov_rendering(t_runtime *r)
         r->line.dist = calucl_dist(r->line.start_fov.x, r->line.end_defov.x, r->line.start_fov.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v); 
         playerrendering3D(r, i);
         i++;
-   }
+    }
 }
 //faire un tableau pour tester les deplacement car sinon ca peut buger giltch hors map
-void my_keyhook(mlx_key_data_t keydata, void *param)
+int my_keyhook(int keycode, t_runtime *r)
 {
-    t_runtime *r;
     float *dist_tab;
-    r = param;
-    (void)keydata;
-    if (mlx_is_key_down(r->mlx, MLX_KEY_ESCAPE))
+    //(void)keydata;
+    (void)dist_tab;
+    //printf("keydata = %d\n", keycode);
+    if (keycode == ESC)
+    {
+        mlx_destroy_image(r->mlx, r->img.img);
+        mlx_destroy_window(r->mlx, r->mlx_win);
         exit(1);
-    if(mlx_is_key_down(r->mlx, MLX_KEY_D))
+    }
+    if(keycode == D)
     {   
         /*if(r->player.dir == DIR_W)
             r->player.pdir += PI/2;
@@ -225,7 +232,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         }
         free(dist_tab);
     }
-    if(mlx_is_key_down(r->mlx, MLX_KEY_W))
+    if(keycode == W)
     {
         /*if(r->player.dir == DIR_S)
             r->player.pdir -= PI;
@@ -243,7 +250,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         }
         free(dist_tab);
     }   
-    if(mlx_is_key_down(r->mlx, MLX_KEY_S))
+    if(keycode == S)
     {
         /*if(r->player.dir == DIR_W)
             r->player.pdir += PI;
@@ -262,7 +269,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         }
         free(dist_tab);
     }
-    if(mlx_is_key_down(r->mlx, MLX_KEY_A))
+    if(keycode == A)
     {
         /*if(r->player.dir == DIR_W)
             r->player.pdir -= PI/2;
@@ -281,7 +288,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
         }
         free(dist_tab);
     }
-    if(mlx_is_key_down(r->mlx, MLX_KEY_LEFT))
+    if(keycode == L_AR)
     {
         r->player.pdir -= 0.0174533;
         if(r->player.pdir < 0)
@@ -295,7 +302,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
 		}
 
     }
-    if(mlx_is_key_down(r->mlx, MLX_KEY_RIGHT))
+    if(keycode == R_AR)
     {
        r->player.pdir += 0.0174533;
         if(r->player.pdir > 2 * PI)
@@ -308,6 +315,7 @@ void my_keyhook(mlx_key_data_t keydata, void *param)
 			r->player.pdir_v -= 2 * PI;
 		}
     }
+    return(0);
 }
 
 void my_draw_line(t_runtime *r)
@@ -324,7 +332,7 @@ void my_draw_line(t_runtime *r)
     float err = dx - dy;
     while (1)
     {
-        my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 255, 255));
+        my_mlx_put_pixel(r, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 255, 255));
         if (roundf(xsta) == roundf(xend) && roundf(ysta) == roundf(yend))
             break;
         e2 = 2* err;

@@ -1,4 +1,5 @@
 #include "../includes/Cub3D.h"
+
 void init_tmp(t_runtime *r)
 {
     r->player.pos.x = 96;
@@ -22,7 +23,8 @@ int main(int ac, char **av)
 {
     int fd;
     t_runtime r;
-    
+    //t_img   lol;
+
     if (ac == 2)
     {
         r.filename = av[1];
@@ -31,17 +33,20 @@ int main(int ac, char **av)
         init_tmp(&r);
         parsing(&r, av[1]);
         init_Ppos(&r);
-        mlx_set_setting(MLX_MAXIMIZED, false);
-        r.mlx = mlx_init(WIDTH , HEIGHT, "Cub3D", true);
-        load_textures(&r);
+        r.mlx = mlx_init();
+        r.mlx_win = mlx_new_window(r.mlx, WIDTH, HEIGHT, "Cub3d");
+        //load_textures(&r);
         if (!r.mlx) 
             return (-1);
-        r.img = mlx_new_image(r.mlx, WIDTH, HEIGHT);
-        if (!r.img || (mlx_image_to_window(r.mlx, r.img, 0, 0) < 0))
-		    return(-1);
-        mlx_loop_hook(r.mlx, &playerendering2d, &r);
-	    mlx_key_hook(r.mlx, &my_keyhook, &r);
+        r.img.img = mlx_new_image(r.mlx, WIDTH, HEIGHT);
+        r.img.addr = mlx_get_data_addr(r.img.img, &r.img.bpp, &r.img.line_length, &r.img.endian);
+        // if (!r.img.img || (mlx_put_image_to_window(r.mlx, r.mlx_win, r.img.img, 0, 0) < 0))
+		//     return(-1);
+        //mlx_key_hook(r.mlx_win, my_keyhook, &r);
+         mlx_hook(r.mlx_win, 2, 1L<<0, my_keyhook, &r);
+        mlx_loop_hook(r.mlx, playerendering2d, &r);
+       // mlx_put_image_to_window(r.mlx, r.mlx_win, r.img.img, 0, 0);
 	    mlx_loop(r.mlx);
-	    mlx_terminate(r.mlx);
+	   // return(0);
     }
 }

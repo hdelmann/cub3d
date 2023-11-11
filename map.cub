@@ -2,9 +2,9 @@ NO ./textures/bookshelf.xpm42
 SO ./textures/bricks.xpm42
 WE ./textures/planks.xpm42
 EA ./textures/tilledsoil.xpm42
-F 220,100,99
-C 255,0,2
+F 0,0,255
+C 255,0,0
 11111
-11011
-10N01
+11S01
+1001
 11111

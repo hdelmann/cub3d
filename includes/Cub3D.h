@@ -16,7 +16,8 @@ enum {
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
-#include <MLX42/MLX42.h>
+#include <stdint.h>
+#include "../mlx_linux/mlx.h"
 #include <math.h>
 #include "../getnext/get_next_line.h"
 
@@ -29,6 +30,13 @@ enum {
 #define PCHARSET "NEWS"
 #define FLR 0
 #define CEIL 1
+#define ESC 65307
+#define W 119
+#define A 97
+#define S 115
+#define D 100
+#define L_AR 65361
+#define R_AR 65363
 
 enum Textures{
     NO,
@@ -89,7 +97,7 @@ typedef struct isomet
 typedef struct s_txt
 {
     char            *path;
-    mlx_image_t     *walltxt;
+   // mlx_image_t     *walltxt;
     unsigned int    c_red;
     unsigned int    c_green;
     unsigned int    c_blue;
@@ -97,16 +105,25 @@ typedef struct s_txt
 }              t_txt;
 
 
+typedef struct s_img
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_length;
+	int		endian;
+}           t_img;
 
-typedef struct runetime
+
+typedef struct s_runtime
 {
 	t_map		map;
     t_line      line;
 	t_player	player;
-    mlx_t *mlx;
-    mlx_t *mlx3;
-    mlx_image_t *img;
-    mlx_image_t *img3;
+    void        *mlx;
+    void        *mlx_win;
+    void        *data;
+    t_img       img;
     t_isomet    iso;
     t_txt      txtrs[4];
     t_txt      color[2];
@@ -116,7 +133,9 @@ typedef struct runetime
 
 void load_textures(t_runtime *r);
 char	**ft_split(char const *s, char c);
+int     my_mlx_put_pixel(t_runtime *r, uint32_t x, uint32_t y, uint32_t color);
 int     parse_txt(t_runtime *r);
+void	my_mlx_pixel_put(t_runtime *r, int x, int y, int color);
 void	file_parsing(t_runtime *r);
 int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 int     check_map_t(char **map, char *valid_chars);
@@ -134,12 +153,13 @@ float* myReallocfloat(float *ptr, int Newsize);
 void calcul_line_fovx(void *param);
 void calcul_line_fovy(void *param);
 char *replace_n_to_r(char *line);
-void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float texX);
-int my_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t color);
+//void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float texX);
+//int my_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t color);
+void	my_mlx_pixel_put(t_runtime *r, int x, int y, int color);
 int get_rgba(int r, int g, int b, int a);
 void fillcubeborder(t_runtime *r);
-void playerendering2d(void *param);
-void my_keyhook(mlx_key_data_t keydata, void *param);
+int playerendering2d(t_runtime *r);
+int my_keyhook(int keydata, t_runtime *r);
 float calucl_dist(float x0, float x1, float y0, float y1);
 void calcul_line_interx(void *param, float x0, float y0);
 void calcul_line_intery(void *param, float x0, float y0);
