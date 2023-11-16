@@ -203,6 +203,7 @@ void	file_parsing(t_runtime *r)
 		return;
 	r->map.textures = get_textures(r->map.map);
 	r->map.map = get_map(r->map.map);
+	r->map.map = tab_inv(r->map.map);
 	parse_txt(r);
 }
 

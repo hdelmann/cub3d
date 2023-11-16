@@ -161,6 +161,7 @@ float* myReallocfloat(float *ptr, int Newsize);
 void calcul_line_fovx(void *param);
 void calcul_line_fovy(void *param);
 char *replace_n_to_r(char *line);
+char **tab_inv(char **tab);
 //void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float texX);
 //int my_mlx_put_pixel(mlx_image_t *img, uint32_t x, uint32_t y, uint32_t color);
 void	my_mlx_pixel_put(t_runtime *r, int x, int y, int color);

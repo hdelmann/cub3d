@@ -1,5 +1,33 @@
 #include "../includes/Cub3D.h"
 
+char **tab_inv(char **tab)
+{
+	char **tab_inv;
+	int i;
+	int j;
+	int k;
+
+	i = 0;
+	j = 0;
+	tab_inv = malloc(sizeof(char *) * charlen(tab));
+	while (tab[i] != NULL)
+	{	
+		k = 0;
+		j = my_strlen(tab[i]) - 1;
+		tab_inv[i] = malloc(sizeof(char) * (j + 1));
+		while(j >= 0)
+		{
+			tab_inv[i][k] = tab[i][j];
+			k++;
+			j--;
+		}
+		tab_inv[i][k] = '\0';
+		i++;
+	}
+	tab_inv[i] = NULL;
+	return(tab_inv);
+}
+
 int test_charset(char **c)
 {
 	int k = 0;
