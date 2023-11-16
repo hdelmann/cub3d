@@ -183,7 +183,7 @@ void fov_rendering(t_runtime *r)
         }
         if ((r->line.end_fov2.x == r->line.start_fov.x && r->line.end_fov2.y == r->line.start_fov.y))
         {}
-        else if  (sqrt(((r->line.end_fov.x - r->line.start_fov.x) * (r->line.end_fov.x - r->line.start_fov.x)) + ((r->line.end_fov.y - r->line.start_fov.y) * (r->line.end_fov.y - r->line.start_fov.y))) > sqrt(((r->line.end_fov2.x - r->line.start_fov.x) * (r->line.end_fov2.x - r->line.start_fov.x)) + ((r->line.end_fov2.y - r->line.start_fov.y) * (r->line.end_fov2.y - r->line.start_fov.y))))
+        else if  (sqrt(((r->line.end_fov.x - r->line.start_fov.x) * (r->line.end_fov.x - r->line.start_fov.x)) + ((r->line.end_fov.y - r->line.start_fov.y) * (r->line.end_fov.y - r->line.start_fov.y))) >= sqrt(((r->line.end_fov2.x - r->line.start_fov.x) * (r->line.end_fov2.x - r->line.start_fov.x)) + ((r->line.end_fov2.y - r->line.start_fov.y) * (r->line.end_fov2.y - r->line.start_fov.y))))
         {
             r->line.ort = VER;
             r->line.end_fov.x = r->line.end_fov2.x;

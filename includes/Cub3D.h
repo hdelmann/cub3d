@@ -13,6 +13,13 @@ enum {
     HOR,
     VER,
 };
+
+enum {
+    N,
+    E,
+    O,
+    S,
+};
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
@@ -64,6 +71,7 @@ typedef struct s_line
 {
     float dist;
     int ort;
+    int ort2;
     t_point start;
     t_point end;
     float   rad_raystart;

@@ -49,6 +49,26 @@
 
 // }
 
+void calort(void *param)
+{
+    t_runtime *r;
+    r = param;
+    if (r->line.ort == VER)
+    {
+        if (r->line.rad_fov > PI && r->line.rad_fov <= 2 * PI)
+            r->line.ort2 = S;
+        else if (r->line.rad_fov >= 0 && r->line.rad_fov < PI)
+            r->line.ort2 = N;
+    }
+    else if(r->line.ort == HOR)
+    {
+        if ((r->line.rad_fov <= PI / 2 && r->line.rad_fov > 0) || (r->line.rad_fov >= 3 * PI/2 && r->line.rad_fov < 2 *PI))
+            r->line.ort2 = O;
+        else if (r->line.rad_fov >= PI/ 2 && r->line.rad_fov <= 3 * PI/2)
+            r->line.ort2 = E;
+    }
+}
+
 void    playerrendering3D(void *param, float xray){
     t_runtime *r;
 
@@ -86,12 +106,17 @@ void my_draw_line_3D(float x0, float y0, float y1, t_runtime *r)
     float sx = (xsta < xend) ? 1 : -1;
     float sy = (ysta < yend) ? 1 : -1;
     float err = dx - dy;
+    calort(r);
     while (1 && xsta <= WIDTH && ysta <= HEIGHT && xsta >= 0 && ysta >= 0)
     {
-        if (r->line.ort == VER && roundf(ysta) != roundf(yend))
-             my_mlx_put_pixel(r, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 0, 255, 255));
-        else if (r->line.ort == HOR && roundf(ysta) != roundf(yend))
+        if (r->line.ort2 == N && roundf(ysta) != roundf(yend))
+             my_mlx_put_pixel(r, roundf((int)xsta), roundf((int)ysta), get_rgba(255, 0, 0, 255));
+        else if (r->line.ort2 == S && roundf(ysta) != roundf(yend))
             my_mlx_put_pixel(r, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 0, 255));
+        else if (r->line.ort2 == E && roundf(ysta) != roundf(yend))
+             my_mlx_put_pixel(r, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 0, 255, 255));
+        else if (r->line.ort2 == O && roundf(ysta) != roundf(yend))
+            my_mlx_put_pixel(r, roundf((int)xsta), roundf((int)ysta), get_rgba(255, 255, 255, 255));
         else if (roundf(ysta) == roundf(yend) || roundf(ysta) == roundf(yend) - 1 || roundf(xsta) == 0 || roundf(xsta) == 1)
             my_mlx_put_pixel(r, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 0, 255));
         //my_mlx_put_pixel(r->img, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 155, 0, 255));
