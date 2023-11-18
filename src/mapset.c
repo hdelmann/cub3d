@@ -149,6 +149,7 @@ int is_map_surrounded(t_runtime *r)
 void parsing(t_runtime *r, char *filename)
 {
     file_parsing(r);
+    //printf("XDDD\n");
     filename_check(filename);
     if(check_map_t(r->map.map, CHARSET) == 0)
     {

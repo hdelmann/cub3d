@@ -16,9 +16,9 @@ enum {
 
 enum {
     N,
+    SD,
     E,
     O,
-    S,
 };
 #include <unistd.h>
 #include <stdio.h>
@@ -105,7 +105,11 @@ typedef struct isomet
 typedef struct s_txt
 {
     char            *path;
-   // mlx_image_t     *walltxt;
+    void            *walltxt;
+    char	        *addr;
+	int		        bpp;
+	int	        	line_length;
+	int		        endian;
     unsigned int    c_red;
     unsigned int    c_green;
     unsigned int    c_blue;
@@ -119,6 +123,8 @@ typedef struct s_img
 	char	*addr;
 	int		bpp;
 	int		line_length;
+    int     height;
+    int     width;
 	int		endian;
 }           t_img;
 
@@ -134,11 +140,14 @@ typedef struct s_runtime
     t_img       img;
     t_isomet    iso;
     t_txt      txtrs[4];
+    t_img      txt_d[4];
     t_txt      color[2];
     char    *filename;
+    float   *dist_tab;
 }			t_runtime;
 
 
+void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float xray);
 void load_textures(t_runtime *r);
 char	**ft_split(char const *s, char c);
 int     my_mlx_put_pixel(t_runtime *r, uint32_t x, uint32_t y, uint32_t color);
@@ -168,6 +177,7 @@ void	my_mlx_pixel_put(t_runtime *r, int x, int y, int color);
 int get_rgba(int r, int g, int b, int a);
 void fillcubeborder(t_runtime *r);
 int playerendering2d(t_runtime *r);
+void calort(void *param);
 int my_keyhook(int keydata, t_runtime *r);
 float calucl_dist(float x0, float x1, float y0, float y1);
 void calcul_line_interx(void *param, float x0, float y0);
@@ -179,6 +189,7 @@ void    playerrendering3D(void *param, float xray);
 int charlen(char** tableau);
 int my_strlen(const char* chaine);
 void fov_rendering(t_runtime *r);
+int txt_wall_ort(t_runtime *r, float ysta, float yend);
 void parsing(t_runtime *r, char *filename);
 void init_Ppos(t_runtime *r);
 

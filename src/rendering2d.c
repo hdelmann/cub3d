@@ -210,7 +210,9 @@ int my_keyhook(int keycode, t_runtime *r)
     if (keycode == ESC)
     {
         mlx_destroy_image(r->mlx, r->img.img);
+       // mlx_destroy_image(r->mlx, r->txt_d[NO].img);
         mlx_destroy_window(r->mlx, r->mlx_win);
+        system("pkill ffplay");
         exit(1);
     }
     if(keycode == D)

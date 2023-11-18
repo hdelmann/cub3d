@@ -35,7 +35,7 @@ int main(int ac, char **av)
         init_Ppos(&r);
         r.mlx = mlx_init();
         r.mlx_win = mlx_new_window(r.mlx, WIDTH, HEIGHT, "Cub3d");
-        //load_textures(&r);
+        load_textures(&r);
         if (!r.mlx) 
             return (-1);
         r.img.img = mlx_new_image(r.mlx, WIDTH, HEIGHT);
@@ -46,7 +46,9 @@ int main(int ac, char **av)
          mlx_hook(r.mlx_win, 2, 1L<<0, my_keyhook, &r);
         mlx_loop_hook(r.mlx, playerendering2d, &r);
        // mlx_put_image_to_window(r.mlx, r.mlx_win, r.img.img, 0, 0);
+        system("ffplay -fflags nobuffer -flags low_delay -v 0 -nodisp -autoexit -loop 9999 RedSunInTheSky.mp3 &");
 	    mlx_loop(r.mlx);
+        printf("lol\n");
 	   // return(0);
     }
 }

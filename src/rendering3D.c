@@ -86,8 +86,8 @@ void    playerrendering3D(void *param, float xray){
         y1 = HEIGHT;
     
     //printf("y0 = %f, y1 = %f\n", y0, y1);
-    //draw_textured_wall(r, y0, y1, SO, height, xray);
-    my_draw_line_3D(xray, y0, y1, r);
+    draw_textured_wall(r, y0, y1, txt_wall_ort(r, y0, y1), height, xray);
+    //my_draw_line_3D(xray, y0, y1, r);
 
 }
 

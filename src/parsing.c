@@ -308,7 +308,7 @@ int parse_txt(t_runtime *r)
 			exit(printf("Invalid textures\n"));
 		else if(cmp_and_init_txt(r, array))
 			exit(printf("Invalid textures\n"));
-		free_oldfile(array);
+		//free_oldfile(array);
 		i++;
 	}
 	return(0);

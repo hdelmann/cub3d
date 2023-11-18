@@ -1,21 +1,11 @@
-NO ./textures/bookshelf.xpm42
-SO ./textures/bricks.xpm42
-
-
-
-
-
-
-WE ./textures/planks.xpm42
-
-
-EA ./textures/tilledsoil.xpm42
-
-
+NO ./textures/johnxina.xpm
+SO ./textures/ses.xpm
+WE ./textures/socialcrd.xpm
+EA ./textures/mao.xpm
 F 0,0,255
 C 255,0,255
 11111
-11111
 10101
-100N1
+10N01
+10001
 11111
