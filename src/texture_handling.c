@@ -23,59 +23,60 @@ void  texture_to_image(t_runtime  *r, int txt, float texY, float texX, float xra
   char   *pixel;
   int   color;
 
-  (void)txt;
-  pixel = r->txt_d[txt].addr + ((int)texY * r->txt_d[txt].width + (int)texX  );
+  pixel = r->txt_d[txt].addr + ((int)(texY) * r->txt_d[txt].width + (int)texX * r->txt_d[txt].bpp / 8);
   color = *(int *)pixel;
   my_mlx_pixel_put(r, xray, startY, color);
 }
 
 int txt_wall_ort(t_runtime *r, float ysta, float yend)
 {
-  calort(r);
-  if (r->line.ort2 == N && roundf(ysta) != roundf(yend))
+  (void)ysta;(void)yend;
+  if (r->line.ort == N /*&& roundf(ysta) != roundf(yend)*/)
   {
     return (NO);
   }
-  else if (r->line.ort2 == S && roundf(ysta) != roundf(yend))
+  else if (r->line.ort == S /*&& roundf(ysta) != roundf(yend)*/)
   {
     return(SO);
   }
-  else if (r->line.ort2 == E && roundf(ysta) != roundf(yend))
+  else if (r->line.ort == E /*&& roundf(ysta) != roundf(yend)*/)
   {
     return(EA);
 
   }
-  else if (r->line.ort2 == O && roundf(ysta) != roundf(yend))
+  else if (r->line.ort == O /*&& roundf(ysta) != roundf(yend)*/)
   {
     return(WE);
   }
   printf("ooook\n");
+  printf("ort = %d\n", r->line.ort);
   exit(1);
 }
 
 float wallx_determination_2(t_runtime *r, float ysta, float yend, int txt)
 {
-  calort(r);
-  if (r->line.ort2 == N && roundf(ysta) != roundf(yend))
+  if (r->line.ort == N && roundf(ysta) != roundf(yend))
   {
     return ((int)(r->line.end_fov.x * r->txt_d[txt].width / 5) % r->txt_d[txt].width);
   }
-  else if (r->line.ort2 == S && roundf(ysta) != roundf(yend))
+  else if (r->line.ort == S && roundf(ysta) != roundf(yend))
   {
     return(CASE_SIZE - (int)(r->line.end_fov.x * r->txt_d[txt].width / 5) % r->txt_d[txt].width);
   }
-  else if (r->line.ort2 == E && roundf(ysta) != roundf(yend))
+  else if (r->line.ort == E && roundf(ysta) != roundf(yend))
   {
     return((int)(r->line.end_fov.y * r->txt_d[txt].width / 5) % r->txt_d[txt].width);
 
   }
-  else if (r->line.ort2 == O && roundf(ysta) != roundf(yend))
+  else if (r->line.ort == O && roundf(ysta) != roundf(yend))
   {
     return((int)(r->line.end_fov.y * r->txt_d[txt].width / 5) % r->txt_d[txt].width);
+  
   }
+  printf("ort = %d\n", r->line.ort);
   exit(1);
 }
-
+/*
 static int wallx_determination(t_runtime *r, float ysta, float yend, int txt)
 {
   calort(r);
@@ -98,12 +99,12 @@ static int wallx_determination(t_runtime *r, float ysta, float yend, int txt)
   }
   exit(1);
 }
-
+*/
 void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float xray)
 {
-  int texY;
-  int texX;
-  float wallX;
+  //int texY;
+  //int texX;
+  //float wallX;
 
   //txt = NO;
   printf("oui\n");
@@ -115,12 +116,16 @@ void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float heigh
   if((double)height >= HEIGHT)
   {
     printf("iwashere\n");
-    texY = ((((double) height - HEIGHT) / 2) / (double)height) * CASE_SIZE;
+    //texY = ((((double) height - HEIGHT) / 2) / (double)height) * CASE_SIZE;
   }
   while (startY < endY && startY < HEIGHT /*&& texY < r->txt_d[txt].height - 1*/)
   {
-    texture_to_image(r, txt, texY, texX, xray, startY);
+    if (r->line.ort == N || r->line.ort == S)
+      texture_to_image(r, txt, (int)(((r->line.end_fov.x / CASE_SIZE - (int)r->line.end_fov.x / CASE_SIZE)) * (r->txt_d[txt].width/sizeof(int)) + 1), (int)(((endY - startY) / height) * (r->txt_d[txt].height/sizeof(int)) + 1), xray, startY);
+    else
+      texture_to_image(r, txt, (int)(((r->line.end_fov.y / CASE_SIZE - (int)r->line.end_fov.y / CASE_SIZE)) * (r->txt_d[txt].width/sizeof(int)) + 1), (int)(((endY - startY) / height) * (r->txt_d[txt].height/sizeof(int)) + 1), xray, startY);
+
     startY++;
-    texY += r->txt_d[txt].height / (double)height;
+    //texY += r->txt_d[txt].height / (double)height;
   }
 }

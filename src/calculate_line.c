@@ -197,14 +197,14 @@ t_point calcul_inter(t_runtime *r, float dir)
         {
             if (dir > 3 * PI / 2 && dir <= 2 * PI)
             {
-                r->line.ort = VER;
+                r->line.ort = E;
                 wall.x = (Xwall + 1) * CASE_SIZE;
                 wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall += 1;
             }
             else if (dir > PI && dir < 3 * PI/2)
             {
-                r->line.ort = HOR;
+                r->line.ort = N;
                 wall.y = Ywall * CASE_SIZE;
                 if (tan(dir) == 0)
                     wall.x = play.x;
@@ -214,13 +214,13 @@ t_point calcul_inter(t_runtime *r, float dir)
             }
             else if (dir > PI / 2 && dir < PI)
             {
-                r->line.ort = VER;
+                r->line.ort = O;
                 wall.x = Xwall * CASE_SIZE;
                 wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall -= 1;
             }
             else{
-                r->line.ort = HOR;
+                r->line.ort = S;
                 wall.y = (Ywall + 1) * CASE_SIZE;
                 if(tan(dir) == 0)
                     wall.x = play.x;
@@ -234,7 +234,7 @@ t_point calcul_inter(t_runtime *r, float dir)
         {
             if (dir > 3 * PI / 2 && dir <= 2 * PI)
             {
-                r->line.ort = HOR;
+                r->line.ort = N;
                 wall.y = Ywall * CASE_SIZE;
                 if (tan(dir) == 0)
                     wall.x = play.x;
@@ -244,14 +244,14 @@ t_point calcul_inter(t_runtime *r, float dir)
             }
             else if (dir > PI && dir < 3 * PI / 2)
             {
-                r->line.ort = VER;
+                r->line.ort = O;
                 wall.x = Xwall * CASE_SIZE;
                 wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall -= 1;
             }
 	        else if (dir > PI / 2 && dir < PI)
             {
-                r->line.ort = HOR;
+                r->line.ort = S;
                 wall.y = (Ywall + 1) * CASE_SIZE;
                 if(tan(dir) == 0)
                     wall.x = play.x;
@@ -261,7 +261,7 @@ t_point calcul_inter(t_runtime *r, float dir)
             }
             else
             {
-                r->line.ort = VER;
+                r->line.ort = E;
                 wall.x = (Xwall + 1) * CASE_SIZE;
                 wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall += 1;
