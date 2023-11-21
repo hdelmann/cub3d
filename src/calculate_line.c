@@ -6,10 +6,10 @@ void calcul_line_interx(void *param, float x0, float y0)
 {
     t_runtime *r;
     r = param;
-    r->line.start.x = r->player.pos.x - 5;
-    r->line.start_v.x = r->player.pos.x - 5;
-    r->line.start.y = r->player.pos.y + 5;
-    r->line.start_v.y = r->player.pos.y + 5;
+    r->line.start.x = r->player.pos.x;
+    r->line.start_v.x = r->player.pos.x ;
+    r->line.start.y = r->player.pos.y ;
+    r->line.start_v.y = r->player.pos.y ;
     float tmpx = x0;
     float tmpy = y0;
     r->line.end.x = r->line.start.x;
@@ -44,15 +44,15 @@ void calcul_line_intery(void *param, float x0, float y0)
 {
     t_runtime *r;
     r = param;
-    r->line.start.x = r->player.pos.x - 5;
-    r->line.start_v.x = r->player.pos.x - 5;
-    r->line.start.y = r->player.pos.y + 5;
-    r->line.start_v.y = r->player.pos.y + 5;
+    r->line.start.x = r->player.pos.x ;
+    r->line.start_v.x = r->player.pos.x ;
+    r->line.start.y = r->player.pos.y ;
+    r->line.start_v.y = r->player.pos.y ;
     float tmpx = x0;
     float tmpy = y0;
     r->line.end_v.x = r->line.start.x;
     r->line.end_v.y = r->line.start.y;
-    while (r->map.map[(int)r->line.end_v.y / CASE_SIZE][(int)r->line.end_v.x / CASE_SIZE] != '1')
+    while (r->map.map[(int)(r->line.end_v.y / CASE_SIZE)][(int)(r->line.end_v.x / CASE_SIZE)] != '1')
     {
         if ((r->line.rad_raystart< PI / 2 && r->line.rad_raystart > 0) || (r->line.rad_raystart > 3 * PI/2))
         {
@@ -68,7 +68,7 @@ void calcul_line_intery(void *param, float x0, float y0)
         r->line.end_v.y = tmpy + (tmpx - r->line.end_v.x) * tan(r->line.rad_raystart);
         tmpx = r->line.end_v.x;
         tmpy = r->line.end_v.y;
-        if ((int)tmpx <= 0 || (int)tmpy <= 0 || (int)(tmpy / CASE_SIZE) >= charlen(r->map.map) || (int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)tmpy / CASE_SIZE]))
+        if ((int)tmpx < 0 || (int)tmpy < 0 || (int)(tmpy / CASE_SIZE) >= charlen(r->map.map) || (int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)tmpy / CASE_SIZE]))
         {
             r->line.end_v.x = r->line.start.x;
             r->line.end_v.y = r->line.start.y;
@@ -81,8 +81,8 @@ void calcul_line_fovy(void *param)
 {
     t_runtime *r;
     r = param;
-    r->line.start_fov.x = r->player.pos.x - 5;
-    r->line.start_fov.x = r->player.pos.x - 5;
+    r->line.start_fov.x = r->player.pos.x ;
+    r->line.start_fov.y = r->player.pos.y ;
     float tmpx = r->line.start_fov.x;
     float tmpy = r->line.start_fov.y;
     r->line.end_fov.x = r->line.start_fov.x;
@@ -95,7 +95,7 @@ void calcul_line_fovy(void *param)
     {
         r->line.rad_fov += 2 * PI;
     } */ 
-    while (r->map.map[(int)r->line.end_fov.y / CASE_SIZE][(int)r->line.end_fov.x / CASE_SIZE] != '1')
+    while (r->map.map[(int)(r->line.end_fov.y / CASE_SIZE)][(int)(r->line.end_fov.x / CASE_SIZE)] != '1')
     {
         if ((r->line.rad_fov <= PI / 2 && r->line.rad_fov >= 0) || (r->line.rad_fov >= 3 * PI/2 && r->line.rad_fov <= 2 *PI))
         {
@@ -112,7 +112,7 @@ void calcul_line_fovy(void *param)
         r->line.end_fov.y = tmpy + (tmpx - r->line.end_fov.x) * tan(r->line.rad_fov);
         tmpx = r->line.end_fov.x;
         tmpy = r->line.end_fov.y;
-        if ((int)tmpx <= 0 || (int)tmpy <= 0 || (int)(tmpy / CASE_SIZE) >= charlen(r->map.map) ||(int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)tmpy / CASE_SIZE]))
+        if (tmpx < 0 || tmpy < 0 || (int)(tmpy / CASE_SIZE) >= charlen(r->map.map) ||(int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)tmpy / CASE_SIZE]))
         {
             //printf("je lvaais dit vrm\n");
             r->line.end_fov.x = r->line.start_fov.x;
@@ -126,13 +126,13 @@ void calcul_line_fovx(void *param)
 {
     t_runtime *r;
     r = param;
-    r->line.start_fov.x = r->player.pos.x - 5;
-    r->line.start_fov.y = r->player.pos.y + 5;
+    r->line.start_fov.x = r->player.pos.x ;
+    r->line.start_fov.y = r->player.pos.y ;
     float tmpx = r->line.start_fov.x;
     float tmpy = r->line.start_fov.y;
     r->line.end_fov2.x = r->line.start_fov.x;
     r->line.end_fov2.y = r->line.start_fov.y;
-    while (r->map.map[(int)r->line.end_fov2.y / CASE_SIZE][(int)r->line.end_fov2.x / CASE_SIZE] != '1')
+    while (r->map.map[(int)(r->line.end_fov2.y / CASE_SIZE)][(int)(r->line.end_fov2.x / CASE_SIZE)] != '1')
     {
         if (r->line.rad_fov >= PI && r->line.rad_fov <= 2 * PI)
         {
@@ -150,7 +150,7 @@ void calcul_line_fovx(void *param)
         r->line.end_fov2.x = tmpx + (tmpy - r->line.end_fov2.y) / tan(r->line.rad_fov);
         tmpx = r->line.end_fov2.x;
         tmpy = r->line.end_fov2.y;
-        if ((int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)(tmpy / CASE_SIZE)]) || (int)tmpx <= 0 || (int)tmpy <= 0)
+        if ((int)(tmpx / CASE_SIZE) >= my_strlen(r->map.map[(int)(tmpy / CASE_SIZE)]) || tmpx < 0 || tmpy < 0)
         {
             //printf("je lvaais dit\n");
             r->line.end_fov2.x = r->line.start_fov.x;
@@ -158,6 +158,119 @@ void calcul_line_fovx(void *param)
             break;
         }
     }
+}
+
+t_point calcul_inter(t_runtime *r, float dir)
+{
+    int Xwall;
+    int Ywall;
+    t_point play;
+    t_point wall;
+    play.x = r->player.pos.x;
+    play.y = r->player.pos.y;
+    float teta;
+
+    Xwall = play.x / CASE_SIZE;
+    Ywall = play.y / CASE_SIZE;
+    while (r->map.map[(int)Ywall][(int)Xwall] != '1')
+    {
+        printf("infini");
+        if (dir > 3 * PI / 2 && dir <= 2 * PI)
+        {
+            teta = 2 * PI + atan(((Ywall * CASE_SIZE) - play.y) / (((Xwall + 1) * CASE_SIZE) - play.x));
+            //printf("xwall = %d et ywall = %d\n", Xwall, Ywall);
+        }
+        else if (dir > PI && dir < 3 * PI / 2)
+        {
+            teta = PI + atan(((Ywall * CASE_SIZE) - play.y) / ((Xwall * CASE_SIZE) - play.x));
+        }
+        else if (dir > PI / 2 && dir < PI)
+        {
+            teta = PI + atan((((Ywall + 1) * CASE_SIZE) - play.y) / ((Xwall * CASE_SIZE) - play.x));
+        }
+        else
+        {
+            teta = atan((((Ywall + 1) * CASE_SIZE) - play.y) / (((Xwall + 1) * CASE_SIZE) - play.x));
+
+        }
+        if (dir > teta)
+        {
+            if (dir > 3 * PI / 2 && dir <= 2 * PI)
+            {
+                r->line.ort = VER;
+                wall.x = (Xwall + 1) * CASE_SIZE;
+                wall.y = play.y + (wall.x - play.x) * tan(dir);
+                Xwall += 1;
+            }
+            else if (dir > PI && dir < 3 * PI/2)
+            {
+                r->line.ort = HOR;
+                wall.y = Ywall * CASE_SIZE;
+                if (tan(dir) == 0)
+                    wall.x = play.x;
+                else 
+                    wall.x = play.x + (wall.y - play.y) / tan(dir);
+                Ywall -= 1;
+            }
+            else if (dir > PI / 2 && dir < PI)
+            {
+                r->line.ort = VER;
+                wall.x = Xwall * CASE_SIZE;
+                wall.y = play.y + (wall.x - play.x) * tan(dir);
+                Xwall -= 1;
+            }
+            else{
+                r->line.ort = HOR;
+                wall.y = (Ywall + 1) * CASE_SIZE;
+                if(tan(dir) == 0)
+                    wall.x = play.x;
+                else
+                    wall.x = play.x + (wall.y - play.y) /tan(dir);
+                Ywall += 1;
+            }
+
+        }
+        else
+        {
+            if (dir > 3 * PI / 2 && dir <= 2 * PI)
+            {
+                r->line.ort = HOR;
+                wall.y = Ywall * CASE_SIZE;
+                if (tan(dir) == 0)
+                    wall.x = play.x;
+                else 
+                    wall.x = play.x + (wall.y - play.y) / tan(dir);
+                Ywall -= 1;
+            }
+            else if (dir > PI && dir < 3 * PI / 2)
+            {
+                r->line.ort = VER;
+                wall.x = Xwall * CASE_SIZE;
+                wall.y = play.y + (wall.x - play.x) * tan(dir);
+                Xwall -= 1;
+            }
+	        else if (dir > PI / 2 && dir < PI)
+            {
+                r->line.ort = HOR;
+                wall.y = (Ywall + 1) * CASE_SIZE;
+                if(tan(dir) == 0)
+                    wall.x = play.x;
+                else
+                    wall.x = play.x + (wall.y - play.y) /tan(dir);
+                Ywall += 1;
+            }
+            else
+            {
+                r->line.ort = VER;
+                wall.x = (Xwall + 1) * CASE_SIZE;
+                wall.y = play.y + (wall.x - play.x) * tan(dir);
+                Xwall += 1;
+            }
+        }
+        play.x = wall.x;
+        play.y = wall.y;
+    }
+    return(wall);
 }
 
 /*void calcul_border(t_runtime *r)

@@ -146,7 +146,7 @@ typedef struct s_runtime
     float   *dist_tab;
 }			t_runtime;
 
-
+t_point calcul_inter(t_runtime *r, float dir);
 void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float xray);
 void load_textures(t_runtime *r);
 char	**ft_split(char const *s, char c);
