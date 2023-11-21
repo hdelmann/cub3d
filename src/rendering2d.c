@@ -157,9 +157,9 @@ void fov_rendering(t_runtime *r)
 {
     float tmp_rad;
     float i = 0;
-    r->line.rad_fov= r->player.pdir_v - r->player.FOV/2;
+    r->line.rad_fov= r->player.pdir_v + r->player.FOV/2;
     tmp_rad = r->line.rad_fov;
-    while (tmp_rad <= r->player.pdir_v + r->player.FOV/2)
+    while (tmp_rad >= r->player.pdir_v - r->player.FOV/2)
     {
         r->line.ort = HOR;
         //printf("i = %d\n", i);
@@ -194,7 +194,7 @@ void fov_rendering(t_runtime *r)
        // printf("y = %f, x = %f\n ", r->line.end_defov.y, r->line.end_defov.x);
        // my_draw_line(r);
         r->line.rad_fov = tmp_rad;
-        r->line.rad_fov += 0.0005457;
+        r->line.rad_fov -= 0.0005457;
         r->line.dist = calucl_dist(r->line.start_fov.x, r->line.end_defov.x, r->line.start_fov.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v); 
         playerrendering3D(r, i);
         i++;
@@ -215,7 +215,7 @@ int my_keyhook(int keycode, t_runtime *r)
         system("pkill ffplay");
         exit(1);
     }
-    if(keycode == D)
+    if(keycode == A)
     {   
         /*if(r->player.dir == DIR_W)
             r->player.pdir += PI/2;
@@ -271,7 +271,7 @@ int my_keyhook(int keycode, t_runtime *r)
         }
         free(dist_tab);
     }
-    if(keycode == A)
+    if(keycode == D)
     {
         /*if(r->player.dir == DIR_W)
             r->player.pdir -= PI/2;
@@ -290,7 +290,7 @@ int my_keyhook(int keycode, t_runtime *r)
         }
         free(dist_tab);
     }
-    if(keycode == L_AR)
+    if(keycode == R_AR)
     {
         r->player.pdir -= 0.0174533;
         if(r->player.pdir < 0)
@@ -304,7 +304,7 @@ int my_keyhook(int keycode, t_runtime *r)
 		}
 
     }
-    if(keycode == R_AR)
+    if(keycode == L_AR)
     {
        r->player.pdir += 0.0174533;
         if(r->player.pdir > 2 * PI)
