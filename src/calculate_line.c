@@ -174,7 +174,6 @@ t_point calcul_inter(t_runtime *r, float dir)
     Ywall = play.y / CASE_SIZE;
     while (r->map.map[(int)Ywall][(int)Xwall] != '1')
     {
-        printf("infini");
         if (dir > 3 * PI / 2 && dir <= 2 * PI)
         {
             teta = 2 * PI + atan(((Ywall * CASE_SIZE) - play.y) / (((Xwall + 1) * CASE_SIZE) - play.x));

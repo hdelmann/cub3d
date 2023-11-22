@@ -153,8 +153,42 @@ int playerendering2d(t_runtime  *r)
     return(0);
 }
 
-
 void fov_rendering(t_runtime *r)
+{
+    float tmp_rad;
+    float i = 0;
+    t_point endinter;
+    int x = 0;
+    r->line.rad_fov= r->player.pdir_v + r->player.FOV/2;
+    tmp_rad = r->line.rad_fov;
+    while (tmp_rad >= r->player.pdir_v - r->player.FOV/2)
+    {
+        tmp_rad = r->line.rad_fov;
+        while (r->line.rad_fov < 0)
+        {
+            r->line.rad_fov += 2 * PI; 
+        }
+        while (r->line.rad_fov > 2 * PI)
+        {
+            r->line.rad_fov -= 2 * PI;
+        }
+        endinter = calcul_inter(r, r->line.rad_fov);
+        r->line.end_fov.x = endinter.x;
+        r->line.end_fov.y = endinter.y;
+       // my_draw_line(r);
+        //r->line.rad_fov = tmp_rad;
+        //fflush(stdout);
+        //r->line.rad_fov -= r->player.FOV / WIDTH;
+        r->line.rad_fov = tmp_rad;
+        r->line.rad_fov -= 0.0005457;
+        r->line.dist = calucl_dist(r->player.pos.x, endinter.x, r->player.pos.y, endinter.y) * cos(r->line.rad_fov - r->player.pdir_v);
+        playerrendering3D(r, x);
+        i++;
+        x++;
+    }
+}
+
+void fov_renderingg(t_runtime *r)
 {
     float tmp_rad;
     float i = 0;
@@ -192,41 +226,41 @@ void fov_rendering(t_runtime *r)
     }
 }
 
-void fov_rendering_2(t_runtime *r)
-{
-    float tmp_rad;
-    float i = 0;
-    t_point endinter;
-    r->line.rad_fov= r->player.pdir_v + r->player.FOV/2;
-    tmp_rad = r->line.rad_fov;
-    while (tmp_rad >= r->player.pdir_v - r->player.FOV/2)
-    {
-        //r->line.ort = HOR;
-        //printf("i = %d\n", i);
-        tmp_rad = r->line.rad_fov;
-        if (r->line.rad_fov < 0)
-        {
-            r->line.rad_fov += 2 * PI; 
-        }
-        else if (r->line.rad_fov > 2 * PI)
-        {
-            r->line.rad_fov -= 2 * PI;
-        }
-        printf("tmprad = %f xpl = %d et yplay = %d == %c\n", r->line.rad_fov, (int)r->player.pos.x / 64, (int)r->player.pos.y / 64, r->map.map[(int)r->player.pos.y / 64][(int)r->player.pos.x / 64]);
-        endinter = calcul_inter(r, r->line.rad_fov);
-        r->line.end_defov.x = endinter.x;
-        r->line.end_defov.y = endinter.y;
-        printf("y = %f, x = %f\n\n", r->line.end_defov.y, r->line.end_defov.x);
-       // my_draw_line(r);
-        r->line.rad_fov = tmp_rad;
-        fflush(stdout);
-        r->line.rad_fov -= r->player.FOV / WIDTH;
-        r->line.dist = calucl_dist(r->player.pos.x, r->line.end_defov.x, r->player.pos.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v); 
-        playerrendering3D(r, i);
-        printf("tim\n");
-        i++;
-    }
-}
+//void fov_rendering_2(t_runtime *r)
+//{
+//    float tmp_rad;
+//    float i = 0;
+//    t_point endinter;
+//    r->line.rad_fov= r->player.pdir_v + r->player.FOV/2;
+//    tmp_rad = r->line.rad_fov;
+//    while (tmp_rad >= r->player.pdir_v - r->player.FOV/2)
+//    {
+//        //r->line.ort = HOR;
+//        //printf("i = %d\n", i);
+//        tmp_rad = r->line.rad_fov;
+//        if (r->line.rad_fov < 0)
+//        {
+//            r->line.rad_fov += 2 * PI; 
+//        }
+//        else if (r->line.rad_fov > 2 * PI)
+//        {
+//            r->line.rad_fov -= 2 * PI;
+//        }
+//        printf("tmprad = %f xpl = %d et yplay = %d == %c\n", r->line.rad_fov, (int)r->player.pos.x / 64, (int)r->player.pos.y / 64, r->map.map[(int)r->player.pos.y / 64][(int)r->player.pos.x / 64]);
+//        endinter = calcul_inter(r, r->line.rad_fov);
+//        r->line.end_defov.x = endinter.x;
+//        r->line.end_defov.y = endinter.y;
+//        printf("y = %f, x = %f\n\n", r->line.end_defov.y, r->line.end_defov.x);
+//       // my_draw_line(r);
+//        r->line.rad_fov = tmp_rad;
+//        fflush(stdout);
+//        r->line.rad_fov -= r->player.FOV / WIDTH;
+//        r->line.dist = calucl_dist(r->player.pos.x, r->line.end_defov.x, r->player.pos.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v); 
+//        playerrendering3D(r, i);
+//        printf("tim\n");
+//        i++;
+//    }
+//}
 //faire un tableau pour tester les deplacement car sinon ca peut buger giltch hors map
 int my_keyhook(int keycode, t_runtime *r)
 {
@@ -244,74 +278,25 @@ int my_keyhook(int keycode, t_runtime *r)
     }
     if(keycode == A)
     {   
-
-        r->player.pdir += PI/2;
-        dist_tab = ft_colision(r, r->line.start.x + ((float)(cos(r->player.pdir))), r->line.start.y - ((float)(sin(r->player.pdir))));
-        r->player.pdir -= PI/2;
-       // if (test_dist(dist_tab, 8) == 1)
-        //{
-            r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir - PI/2)));
-            r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir - PI/2)));
-       // }
-        free(dist_tab);
+        r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir_v - PI/2)));
+        r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir_v - PI/2)));
     }
     if(keycode == W)
-    {
-        /*if(r->player.dir == DIR_S)
-            r->player.pdir -= PI;
-        if(r->player.dir == DIR_A)
-            r->player.pdir += PI/2;        
-        if(r->player.dir == DIR_D)
-            r->player.pdir -= PI/2;
-        r->player.dir = DIR_W;*/
-        dist_tab = ft_colision(r, r->line.start.x + ((float)(cos(r->player.pdir_v))), r->line.start.y - ((float)(sin(r->player.pdir_v))));
-        //if (test_dist(dist_tab, 8) == 1)
-        //{
-            
-            r->player.pos.x += 0.5 * (float)(cos(r->player.pdir_v));
-            r->player.pos.y -= 0.5 * (float)(sin(r->player.pdir_v));
-       // }
-        free(dist_tab);
+    {       
+        r->player.pos.x += 0.5 * (float)(cos(r->player.pdir_v));
+        r->player.pos.y += 0.5 * (float)(sin(r->player.pdir_v));
     }   
     if(keycode == S)
     {
-        /*if(r->player.dir == DIR_W)
-            r->player.pdir += PI;
-        if(r->player.dir == DIR_A)
-            r->player.pdir -= PI/2;        
-        if(r->player.dir == DIR_D)
-            r->player.pdir += PI/2;
-        r->player.dir = DIR_S;*/
-        r->player.pdir += PI;
-        dist_tab = ft_colision(r, r->line.start.x + ((float)(cos(r->player.pdir))), r->line.start.y - ((float)(sin(r->player.pdir))));
-        r->player.pdir -= PI;
-        //if (test_dist(dist_tab, 8) == 1)
-        //{
-            r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir)));
-            r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir)));
-        //}
-        free(dist_tab);
+        r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir_v)));
+        r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir_v)));
     }
     if(keycode == D)
     {
-        /*if(r->player.dir == DIR_W)
-            r->player.pdir -= PI/2;
-        if(r->player.dir == DIR_S)
-            r->player.pdir += PI/2;        
-        if(r->player.dir == DIR_D)
-            r->player.pdir += PI;
-        r->player.dir = DIR_A;*/
-        r->player.pdir -= PI/2;
-        dist_tab = ft_colision(r, r->line.start.x + ((float)(cos(r->player.pdir))), r->line.start.y - ((float)(sin(r->player.pdir))));
-        r->player.pdir += PI/2;
-        //if (test_dist(dist_tab, 8) == 1)
-        //{
-            r->player.pos.x += 0.5 * ((float)(cos(r->player.pdir - PI/2)));
-            r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir - PI/2)));
-        //}
-        free(dist_tab);
+        r->player.pos.x += 0.5 * ((float)(cos(r->player.pdir_v - PI/2)));
+        r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir_v - PI/2)));
     }
-    if(keycode == L_AR)
+    if(keycode == R_AR)
     {
         r->player.pdir -= 0.0174533;
         if(r->player.pdir < 0)
@@ -325,7 +310,7 @@ int my_keyhook(int keycode, t_runtime *r)
 		}
 
     }
-    if(keycode == R_AR)
+    if(keycode == L_AR)
     {
        r->player.pdir += 0.0174533;
         if(r->player.pdir > 2 * PI)

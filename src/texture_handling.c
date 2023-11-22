@@ -107,8 +107,6 @@ void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float heigh
   float wallX;
 
   //txt = NO;
-  printf("oui\n");
-  fflush(stdout);
   texY = 0;
  // txt_wall_ort(r, xray, startY, endY);
   //if((double)height >= HEIGHT)
