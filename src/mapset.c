@@ -182,15 +182,16 @@ void    map_fill(t_runtime *r, int fd)
     {
         if (!is_line_empty(line))
         {
-            t_malloc++;
+             t_malloc++;
             line = replace_n_to_r(line);
             r->map.map = ft_realloc2(r->map.map, t_malloc);
-            r->map.map[i] = ft_strdup(r->map.map[i], line);
+            r->map.map[i] = ft_strdup_ff(r->map.map[i], line);
             i++;
             r->map.map[i] = NULL;
 
         }
         r->map.lines++;
+        free(line);
         line = get_next_line(fd);
     }
 }

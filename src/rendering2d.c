@@ -159,9 +159,10 @@ void fov_rendering(t_runtime *r)
     float i = 0;
     t_point endinter;
     int x = 0;
-    r->line.rad_fov= r->player.pdir_v + r->player.FOV/2;
+    r->line.rad_fov= r->player.pdir + r->player.FOV/2;
     tmp_rad = r->line.rad_fov;
-    while (tmp_rad >= r->player.pdir_v - r->player.FOV/2)
+    printf("x = %f y = %f\n", r->player.pos.x, r->player.pos.y);
+    while (tmp_rad >= r->player.pdir - r->player.FOV/2)
     {
         tmp_rad = r->line.rad_fov;
         while (r->line.rad_fov < 0)
@@ -193,10 +194,10 @@ void fov_renderingg(t_runtime *r)
     float tmp_rad;
     float i = 0;
     t_point endinter;
-    float a =  -PI / 7;
+    float a =  -r->player.FOV/2;
     int x = 0;
 
-    while (x < WIDTH)
+    while (x <= WIDTH)
     {
         tmp_rad = r->player.pdir + a;
         if (tmp_rad < 0)
@@ -220,7 +221,7 @@ void fov_renderingg(t_runtime *r)
         r->line.dist = calucl_dist(r->player.pos.x, endinter.x, r->player.pos.y, endinter.y) * cos(a);
         playerrendering3D(r, x);
         printf("tim\n");
-        a += ((2 * PI / 7) / (WIDTH));
+        a += (r->player.FOV / (WIDTH));
         i++;
         x++;
     }
@@ -277,28 +278,45 @@ int my_keyhook(int keycode, t_runtime *r)
         mlx_destroy_image(r->mlx, r->txt_d[SO].img);
         mlx_destroy_image(r->mlx, r->txt_d[WE].img);
         mlx_destroy_window(r->mlx, r->mlx_win);
+        freeTab(r->map.map, charlen(r->map.map));
         system("pkill ffplay");
         exit(1);
     }
     if(keycode == A)
     {   
-        r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir_v - PI/2)));
-        r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir_v - PI/2)));
+        r->player.pos.x += 1 * ((float)(cos(r->player.pdir_v + PI/2)));
+        r->player.pos.y += 1 * ((float)(sin(r->player.pdir_v + PI/2)));
+        //if ((int)r->player.pos.x % 64 == 0)
+        //    r->player.pos.x += 0.5 * ((float)(cos(r->player.pdir_v + PI/2)));
+        //if ((int)r->player.pos.y % 64 == 0)
+        //    r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir_v + PI/2)));
     }
     if(keycode == W)
     {       
-        r->player.pos.x += 0.5 * (float)(cos(r->player.pdir_v));
-        r->player.pos.y += 0.5 * (float)(sin(r->player.pdir_v));
+        r->player.pos.x += 1 * (float)(cos(r->player.pdir_v));
+        r->player.pos.y += 1 * (float)(sin(r->player.pdir_v));
+        //if ((int)r->player.pos.x % 64 == 0)
+        //    r->player.pos.x += 0.5 * ((float)(cos(r->player.pdir_v)));
+        //if ((int)r->player.pos.y % 64 == 0)
+        //    r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir_v)));
     }   
     if(keycode == S || r->coa == 1)
     {
-        r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir_v)));
-        r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir_v)));
+        r->player.pos.x -= 1 * ((float)(cos(r->player.pdir_v)));
+        r->player.pos.y -= 1 * ((float)(sin(r->player.pdir_v)));
+        //if ((int)r->player.pos.x % 64 == 0)
+        //    r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir_v)));
+        //if ((int)r->player.pos.y % 64 == 0)
+        //    r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir_v)));
     }
     if(keycode == D)
     {
-        r->player.pos.x += 0.5 * ((float)(cos(r->player.pdir_v - PI/2)));
-        r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir_v - PI/2)));
+        r->player.pos.x += 1 * ((float)(cos(r->player.pdir_v - PI/2)));
+        r->player.pos.y += 1 * ((float)(sin(r->player.pdir_v - PI/2)));
+        //if ((int)r->player.pos.x % 64 == 0)
+        //    r->player.pos.x += 0.5 * ((float)(cos(r->player.pdir_v - PI/2)));
+        //if ((int)r->player.pos.y % 64 == 0)
+        //    r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir_v - PI/2)));
     }
     if(keycode == R_AR)
     {

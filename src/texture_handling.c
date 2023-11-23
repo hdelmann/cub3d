@@ -42,6 +42,7 @@ int txt_wall_ort(t_runtime *r, float ysta, float yend)
   }
   printf("ooook\n");
   printf("ort = %d\n", r->line.ort);
+  printf("dire = %f\n", r->line.rad_fov);
   exit(1);
 }
 
@@ -75,6 +76,8 @@ float wallx_determination_2(t_runtime *r, float ysta, float yend, int txt)
     return(CASE_SIZE - (int)(r->line.end_fov.y * r->txt_d[txt].width / 5) % r->txt_d[txt].width);
   
   }
+  printf("ort = %d\n", r->line.ort);
+  printf("dire = %f\n", r->line.rad_fov);
   exit(1);
 }
 

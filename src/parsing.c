@@ -203,7 +203,7 @@ void	file_parsing(t_runtime *r)
 		return;
 	r->map.textures = get_textures(r->map.map);
 	r->map.map = get_map(r->map.map);
-	r->map.map = tab_inv(r->map.map);
+	//r->map.map = tab_inv(r->map.map);
 	parse_txt(r);
 }
 
@@ -271,6 +271,7 @@ int	set_fl_or_cl(t_runtime *r, char *array, int f_or_c)
 			r->color[f_or_c].c_blue = ft_atoi(rgb[i]);
 		i++;
 	}
+	freeTab(rgb, charlen(rgb));
 	return(0);
 }
 
@@ -309,6 +310,7 @@ int parse_txt(t_runtime *r)
 		else if(cmp_and_init_txt(r, array))
 			exit(printf("Invalid textures\n"));
 		//free_oldfile(array);
+		freeTab(array, charlen(array));
 		i++;
 	}
 	return(0);

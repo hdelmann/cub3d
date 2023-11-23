@@ -148,6 +148,7 @@ typedef struct s_runtime
     float   *dist_tab;
 }			t_runtime;
 
+void freeTab(char **array, int size);
 t_point calcul_inter(t_runtime *r, float dir);
 void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float xray);
 void load_textures(t_runtime *r);
@@ -163,6 +164,7 @@ int     check_invalid_mapt(t_runtime *r);
 int     is_map_surrounded(t_runtime *r);
 int     parsing_map(t_runtime *r);
 char    *ft_strdup(char	*dst, char *src);
+char *ft_strdup_ff(char	*dst, char *src);
 int	    is_line_empty(char *str);
 void     map_fill(t_runtime *r, int fd);
 char	*ft_strdup_f(char *src);

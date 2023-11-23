@@ -9,11 +9,11 @@ char **tab_inv(char **tab)
 
 	i = 0;
 	j = 0;
-	tab_inv = malloc(sizeof(char *) * charlen(tab));
+	tab_inv = malloc(sizeof(char *) * (charlen(tab) + 1));
 	while (tab[i] != NULL)
 	{	
 		k = 0;
-		j = my_strlen(tab[i]) - 1;
+		j = my_strlen(tab[i]);
 		tab_inv[i] = malloc(sizeof(char) * (j + 1));
 		while(j >= 0)
 		{
@@ -76,6 +76,25 @@ char *ft_strdup(char	*dst, char *src)
 	int	i;
 
 	i = 0;
+	while (src[i])
+		++i;
+	dst = malloc(sizeof(char) * i + 1);
+	i = 0;
+	while (src[i])
+	{
+		dst[i] = src[i];
+		++i;
+	}
+	dst[i] = '\0';
+	return (dst);
+}
+
+char *ft_strdup_ff(char	*dst, char *src)
+{
+	int	i;
+
+	i = 0;
+//	free(dst);
 	while (src[i])
 		++i;
 	dst = malloc(sizeof(char) * i + 1);
@@ -303,21 +322,35 @@ char *replace_n_to_r(char *line)
     return (line);
 }
 
+void freeTab(char **array, int size) {
+    if (array == NULL) {
+        return;  // Si le tableau est déjà NULL, il n'y a rien à libérer
+    }
+
+    int i = 0;
+    while (i < size) {
+        free(array[i]);  // Libère chaque chaîne de caractères
+        i++;
+    }
+
+    free(array);  // Libère le tableau de pointeurs
+}
+
 char	**ft_realloc2(char **map, int i)
 {
 	char	**map_tp;
 	int		x;
 
 	x = 0;
-	map_tp = malloc(i * sizeof(char *));
+  	map_tp = malloc(i * sizeof(char *));
 	while (map[x] != NULL)
 	{
 		map_tp[x] = ft_strdup(map_tp[x], map[x]);
-        free(map[x]);
 		x++;
 	}
-	free(map);
-	map_tp[x] = NULL;
+	if (x != 0)
+		map_tp[x] = NULL;
+	freeTab(map, charlen(map));
 	return (map_tp);
 }
 
