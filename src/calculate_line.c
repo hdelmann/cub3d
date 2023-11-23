@@ -196,7 +196,7 @@ t_point calcul_inter(t_runtime *r, float dir)
         {
             if (dir > 3 * PI / 2 && dir <= 2 * PI)
             {
-                r->line.ort = E;
+                r->line.ort = O;
                 wall.x = (Xwall + 1) * CASE_SIZE;
                 wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall += 1;
@@ -213,7 +213,7 @@ t_point calcul_inter(t_runtime *r, float dir)
             }
             else if (dir > PI / 2 && dir < PI)
             {
-                r->line.ort = O;
+                r->line.ort = E;
                 wall.x = Xwall * CASE_SIZE;
                 wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall -= 1;
@@ -243,7 +243,7 @@ t_point calcul_inter(t_runtime *r, float dir)
             }
             else if (dir > PI && dir < 3 * PI / 2)
             {
-                r->line.ort = O;
+                r->line.ort = E;
                 wall.x = Xwall * CASE_SIZE;
                 wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall -= 1;
@@ -260,7 +260,7 @@ t_point calcul_inter(t_runtime *r, float dir)
             }
             else
             {
-                r->line.ort = E;
+                r->line.ort = O;
                 wall.x = (Xwall + 1) * CASE_SIZE;
                 wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall += 1;

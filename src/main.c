@@ -5,7 +5,9 @@ void init_tmp(t_runtime *r)
     r->player.pos.x = 96;
     r->player.pos.y = 96;
     r->player.pdir = PI/2;
+    r->coa = 0;
     r->player.pdir_v = PI/2;
+    r->textY = 0;
     r->player.dir = DIR_W;
     r->line.start.x = r->player.pos.x - 5;
     r->line.start_v.x = r->player.pos.x - 5;
@@ -46,7 +48,7 @@ int main(int ac, char **av)
          mlx_hook(r.mlx_win, 2, 1L<<0, my_keyhook, &r);
         mlx_loop_hook(r.mlx, playerendering2d, &r);
        // mlx_put_image_to_window(r.mlx, r.mlx_win, r.img.img, 0, 0);
-       // system("ffplay -fflags nobuffer -flags low_delay -v 0 -nodisp -autoexit -loop 9999 RedSunInTheSky.mp3 &");
+        //system("ffplay -fflags nobuffer -flags low_delay -v 0 -nodisp -autoexit -loop 9999 RedSunInTheSky.mp3 &");
 	    mlx_loop(r.mlx);
         printf("lol\n");
 	   // return(0);

@@ -143,6 +143,8 @@ typedef struct s_runtime
     t_img      txt_d[4];
     t_txt      color[2];
     char    *filename;
+    int     coa;
+    float      textY;
     float   *dist_tab;
 }			t_runtime;
 

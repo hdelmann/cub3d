@@ -268,10 +268,14 @@ int my_keyhook(int keycode, t_runtime *r)
     //(void)keydata;
     (void)dist_tab;
     //printf("keydata = %d\n", keycode);
+
     if (keycode == ESC)
     {
         mlx_destroy_image(r->mlx, r->img.img);
-       // mlx_destroy_image(r->mlx, r->txt_d[NO].img);
+        mlx_destroy_image(r->mlx, r->txt_d[NO].img);
+        mlx_destroy_image(r->mlx, r->txt_d[EA].img);
+        mlx_destroy_image(r->mlx, r->txt_d[SO].img);
+        mlx_destroy_image(r->mlx, r->txt_d[WE].img);
         mlx_destroy_window(r->mlx, r->mlx_win);
         system("pkill ffplay");
         exit(1);
@@ -286,7 +290,7 @@ int my_keyhook(int keycode, t_runtime *r)
         r->player.pos.x += 0.5 * (float)(cos(r->player.pdir_v));
         r->player.pos.y += 0.5 * (float)(sin(r->player.pdir_v));
     }   
-    if(keycode == S)
+    if(keycode == S || r->coa == 1)
     {
         r->player.pos.x -= 0.5 * ((float)(cos(r->player.pdir_v)));
         r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir_v)));

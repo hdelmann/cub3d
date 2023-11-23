@@ -3,10 +3,11 @@
 void load_textures(t_runtime *r)
 {
   int crd = NO;
+  
+  r->txt_d[crd].img = malloc(sizeof(t_img*) * 4);
   while (crd <= WE)
   {
-  
-      r->txt_d[crd].img = mlx_xpm_file_to_image(r->mlx, r->txtrs[crd].path, &r->txt_d[crd].width, &r->txt_d[crd].height);
+        r->txt_d[crd].img = mlx_xpm_file_to_image(r->mlx, r->txtrs[crd].path, &r->txt_d[crd].width, &r->txt_d[crd].height);
     if(!r->txt_d[crd].img)
     {
       printf("Error: Unable to load \"%s\"\n", r->txtrs[crd].path);
@@ -18,15 +19,6 @@ void load_textures(t_runtime *r)
   }
 }       
 
-void  texture_to_image(t_runtime  *r, int txt, float texY, float texX, float xray, int startY)
-{
-  char   *pixel;
-  int   color;
-
-  pixel = r->txt_d[txt].addr + ((int)(texY) * (int)r->txt_d[txt].line_length + (int)texX * (int)r->txt_d[txt].bpp /8);
-  color = *(int *)pixel;
-  my_mlx_pixel_put(r, (int)xray, startY, color);
-}
 
 int txt_wall_ort(t_runtime *r, float ysta, float yend)
 {
@@ -53,11 +45,21 @@ int txt_wall_ort(t_runtime *r, float ysta, float yend)
   exit(1);
 }
 
+void  texture_to_image(t_runtime  *r, int txt, float texY, float texX, float xray, int startY)
+{
+  char   *pixel;
+  int   color;
+
+  pixel = r->txt_d[txt].addr + ((int)(texY) * (int)r->txt_d[txt].line_length + (int)texX * (int)r->txt_d[txt].bpp /8);
+  color = *(int *)pixel;
+  my_mlx_pixel_put(r, (int)xray, startY, color);
+}
+
 float wallx_determination_2(t_runtime *r, float ysta, float yend, int txt)
 {
   if (r->line.ort == N && ysta <= yend)
   {
-    return (r->line.end_fov.x / 5 - (int)r->line.end_fov.x / 5) * r->txt_d[txt].width;//((int)r->line.end_fov.x * r->txt_d[txt].width / 5)  % r->txt_d[txt].width;
+    return (CASE_SIZE - (int)(r->line.end_fov.x * r->txt_d[txt].width / 5) % r->txt_d[txt].width);
   }
   else if (r->line.ort == S && ysta <= yend)
   {
@@ -70,60 +72,31 @@ float wallx_determination_2(t_runtime *r, float ysta, float yend, int txt)
   }
   else if (r->line.ort == O && ysta <= yend)
   {
-    return((int)(r->line.end_fov.y * r->txt_d[txt].width / 5) % r->txt_d[txt].width);
+    return(CASE_SIZE - (int)(r->line.end_fov.y * r->txt_d[txt].width / 5) % r->txt_d[txt].width);
   
   }
-  printf("ort = %d\n", r->line.ort);
   exit(1);
 }
-/*
-static int wallx_determination(t_runtime *r, float ysta, float yend, int txt)
-{
-  calort(r);
-  if (r->line.ort2 == N && roundf(ysta) != roundf(yend))
-  {
-    return (r->line.end_fov.x / CASE_SIZE - (int)r->line.end_fov.x / CASE_SIZE) * r->txt_d[txt].width;
-  }
-  else if (r->line.ort2 == S && roundf(ysta) != roundf(yend))
-  {
-    return (r->line.end_fov.x / CASE_SIZE - (int)r->line.end_fov.x / CASE_SIZE) * r->txt_d[txt].width;
-  }
-  else if (r->line.ort2 == E && roundf(ysta) != roundf(yend))
-  {
-    return (r->line.end_fov.y / CASE_SIZE - (int)r->line.end_fov.y / CASE_SIZE) * r->txt_d[txt].width;
 
-  }
-  else if (r->line.ort2 == O && roundf(ysta) != roundf(yend))
-  {
-    return (r->line.end_fov.y / CASE_SIZE - (int)r->line.end_fov.y / CASE_SIZE) * r->txt_d[txt].width;
-  }
-  exit(1);
-}
-*/
 void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float xray)
 {
   float texY;
   float texX;
   float wallX;
 
-  //txt = NO;
   texY = 0;
- // txt_wall_ort(r, xray, startY, endY);
-  //if((double)height >= HEIGHT)
-  //{
-  //  printf("iwashere\n");
-  //  texY = ((((double) height - HEIGHT) / 2) / (double)height) * CASE_SIZE;
-  //}
-  while (startY < endY && startY < HEIGHT && texY < r->txt_d[txt].height - 1)
+  wallX = wallx_determination_2(r, startY, endY, txt);
+  texX = wallX;
+  if(height >= HEIGHT)
   {
-   wallX = wallx_determination_2(r, startY, endY, txt);
-   texX = wallX;
-    //if (r->line.ort == N || r->line.ort == S)
-      texture_to_image(r, txt, texY, texX, xray, startY);
-    //else
-    //  texture_to_image(r, txt, (int)(((r->line.end_fov.y / CASE_SIZE - (int)r->line.end_fov.y / CASE_SIZE)) * (r->txt_d[txt].width/sizeof(int)) + 1), (int)(((endY - startY) / height) * (r->txt_d[txt].height/sizeof(int)) + 1), xray, startY);
+    texY += (((r->txt_d[txt].height - HEIGHT) / 2) / height) * CASE_SIZE;
+  }
+  while (startY < endY && startY < HEIGHT && texY < r->txt_d[txt].height - 1)
+  { 
 
+    texture_to_image(r, txt, texY, texX, xray, startY);
+  
     startY++;
-    texY += r->txt_d[txt].height / height;
+    texY += r->txt_d[txt].height / (double)height;
   }
 }
