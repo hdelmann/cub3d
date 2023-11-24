@@ -340,7 +340,7 @@ void     init_Ppos(t_runtime *r)
 				}
                 r->player.pos.x = x * CASE_SIZE + 1 * CASE_SIZE / 2;
                 r->player.pos.y = y * CASE_SIZE + 1 * CASE_SIZE / 2;
-                if (r->map.map[y][x] == 'N')
+                if (r->map.map[y][x] == 'S')
 				{
                     r->player.pdir_v = PI/2;
 					r->player.pdir = PI/2;
@@ -350,7 +350,7 @@ void     init_Ppos(t_runtime *r)
                     r->player.pdir_v = PI;
 					r->player.pdir = PI;
 				}
-                else if (r->map.map[y][x] == 'S')
+                else if (r->map.map[y][x] == 'N')
 				{
                     r->player.pdir_v = 3*PI/2;
 					r->player.pdir = 3*PI/2;

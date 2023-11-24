@@ -46,12 +46,12 @@ int txt_wall_ort(t_runtime *r, float ysta, float yend)
   exit(1);
 }
 
-void  texture_to_image(t_runtime  *r, int txt, float texY, float texX, float xray, int startY)
+void  texture_to_image(t_runtime  *r, int txt, float tex_y, float tex_x, float xray, int startY)
 {
   char   *pixel;
   int   color;
 
-  pixel = r->txt_d[txt].addr + ((int)(texY) * (int)r->txt_d[txt].line_length + (int)texX * (int)r->txt_d[txt].bpp /8);
+  pixel = r->txt_d[txt].addr + ((int)(tex_y) * (int)r->txt_d[txt].line_length + (int)tex_x * (int)r->txt_d[txt].bpp /8);
   color = *(int *)pixel;
   my_mlx_pixel_put(r, (int)xray, startY, color);
 }
@@ -81,25 +81,57 @@ float wallx_determination_2(t_runtime *r, float ysta, float yend, int txt)
   exit(1);
 }
 
+
+typedef struct s_coord
+{
+  int a;
+  int b;
+}       t_coord;
+
+int	c_min(int a, int b)
+{
+	if (a < b)
+		return (a);
+	return (b);
+}
+
+static int	_get_pos_in_texture(t_coord line_coords, int i, int tex_width)
+{
+	float	pos;
+
+	pos = (float)(i - line_coords.a) / (line_coords.b - line_coords.a);
+	pos = pos * tex_width;
+	return (c_min((int)pos, tex_width - 1));
+}
+
 void draw_textured_wall(t_runtime *r, int startY, int endY, int txt, float height, float xray)
 {
-  float texY;
-  float texX;
-  float wallX;
+	float	tex_y;
+	float	tex_x;
+	float	wallX;
+	t_coord	line;
 
-  texY = 0;
-  wallX = wallx_determination_2(r, startY, endY, txt);
-  texX = wallX;
-  if(height >= HEIGHT)
-  {
-    texY += (((r->txt_d[txt].height - HEIGHT) / 2) / height) * CASE_SIZE;
-  }
-  while (startY < endY && startY < HEIGHT && texY < r->txt_d[txt].height - 1)
-  { 
-
-    texture_to_image(r, txt, texY, texX, xray, startY);
-  
-    startY++;
-    texY += r->txt_d[txt].height / (double)height;
-  }
+	line.a = (-height / 2) + (HEIGHT / 2);
+	line.b = (height / 2) + (HEIGHT / 2);
+	if (line.a < 0)
+	{
+		startY = 0;
+	}
+	else
+		startY = line.a;
+	if (line.b > HEIGHT -1)
+	{
+		endY = HEIGHT - 1;
+	}
+	else
+		endY = line.b;
+	tex_y = 0;
+	wallX = wallx_determination_2(r, startY, endY, txt);
+	tex_x = wallX;
+	while (startY < endY && startY < HEIGHT)
+	{
+		texture_to_image(r, txt, _get_pos_in_texture(line, startY, r->txt_d[txt].width), tex_x, xray, startY);
+		startY++;
+		tex_y += r->txt_d[txt].height / (double)height;
+	}
 }

@@ -161,7 +161,7 @@ void fov_rendering(t_runtime *r)
     int x = 0;
     r->line.rad_fov= r->player.pdir + r->player.FOV/2;
     tmp_rad = r->line.rad_fov;
-    printf("x = %f y = %f\n", r->player.pos.x, r->player.pos.y);
+    //printf("x = %f y = %f\n", r->player.pos.x, r->player.pos.y);
     while (tmp_rad >= r->player.pdir - r->player.FOV/2)
     {
         tmp_rad = r->line.rad_fov;
@@ -282,7 +282,7 @@ int my_keyhook(int keycode, t_runtime *r)
         system("pkill ffplay");
         exit(1);
     }
-    if(keycode == A)
+    else if(keycode == A)
     {   
         r->player.pos.x += 1 * ((float)(cos(r->player.pdir_v + PI/2)));
         r->player.pos.y += 1 * ((float)(sin(r->player.pdir_v + PI/2)));
@@ -291,7 +291,7 @@ int my_keyhook(int keycode, t_runtime *r)
         //if ((int)r->player.pos.y % 64 == 0)
         //    r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir_v + PI/2)));
     }
-    if(keycode == W)
+    else if(keycode == W)
     {       
         r->player.pos.x += 1 * (float)(cos(r->player.pdir_v));
         r->player.pos.y += 1 * (float)(sin(r->player.pdir_v));
@@ -300,7 +300,7 @@ int my_keyhook(int keycode, t_runtime *r)
         //if ((int)r->player.pos.y % 64 == 0)
         //    r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir_v)));
     }   
-    if(keycode == S || r->coa == 1)
+    else if(keycode == S || r->coa == 1)
     {
         r->player.pos.x -= 1 * ((float)(cos(r->player.pdir_v)));
         r->player.pos.y -= 1 * ((float)(sin(r->player.pdir_v)));
@@ -309,7 +309,7 @@ int my_keyhook(int keycode, t_runtime *r)
         //if ((int)r->player.pos.y % 64 == 0)
         //    r->player.pos.y -= 0.5 * ((float)(sin(r->player.pdir_v)));
     }
-    if(keycode == D)
+    else if(keycode == D)
     {
         r->player.pos.x += 1 * ((float)(cos(r->player.pdir_v - PI/2)));
         r->player.pos.y += 1 * ((float)(sin(r->player.pdir_v - PI/2)));
@@ -318,7 +318,7 @@ int my_keyhook(int keycode, t_runtime *r)
         //if ((int)r->player.pos.y % 64 == 0)
         //    r->player.pos.y += 0.5 * ((float)(sin(r->player.pdir_v - PI/2)));
     }
-    if(keycode == R_AR)
+    else if(keycode == R_AR)
     {
         r->player.pdir -= 0.0174533;
         if(r->player.pdir < 0)
@@ -332,7 +332,7 @@ int my_keyhook(int keycode, t_runtime *r)
 		}
 
     }
-    if(keycode == L_AR)
+    else if(keycode == L_AR)
     {
        r->player.pdir += 0.0174533;
         if(r->player.pdir > 2 * PI)
