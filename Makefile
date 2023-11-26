@@ -17,15 +17,23 @@ FLAGS    := -Wall -Wextra -Werror -g
 SRCS        :=      src/fct_utils.c \
                           src/calculate_line.c \
                           src/texture_handling.c \
-                          src/mouv.c \
                           src/main.c \
                           src/rendering3D.c \
                           src/mapset.c \
+                          src/mapset2.c \
                           src/rendering2d.c \
-                          src/parsing.c \
                           src/draw.c \
                           getnext/get_next_line_utils.c \
                           getnext/get_next_line.c \
+						  src/txt_utils.c \
+						  src/fct_utils2.c \
+						  src/fct_utils3.c \
+						  src/fct_utils4.c \
+                          src/parsing.c \
+						  src/parsing2.c \
+						  src/parsing3.c \
+						  src/parsing4.c \
+						  src/parsing5.c \
                           
 OBJS        := $(SRCS:.c=.o)
 

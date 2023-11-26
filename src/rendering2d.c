@@ -22,8 +22,6 @@ void fillcubeborder(t_runtime *r)
 
     y = 20;
     i = 0;
-   // printf("seg ou? %c\n", r->map.un_pmap[1][1]);
-
     while(r->map.map[i])
     {
         x = 64;
@@ -64,15 +62,14 @@ float *ft_colision(t_runtime *r, float x0, float y0)
     float tmp_rad;
     float k = 0;
     float *dist_tab;
-    //float dist;
-    r->line.rad_raystart= r->player.pdir - r->player.FOV/4;
+
+    r->line.rad_raystart= r->player.pdir - r->player.fov/4;
     tmp_rad = r->line.rad_raystart;
     dist_tab = malloc(sizeof(float) + 1);
     dist_tab[0] = -1;
     while (k < 6)
     {
-        dist_tab = myReallocfloat(dist_tab, k + 2);
-        //printf("i = %d\n", i);
+        dist_tab = my_reallocfloat(dist_tab, k + 2);
         tmp_rad = r->line.rad_raystart;
         if (r->line.rad_raystart < 0)
         {
@@ -82,7 +79,6 @@ float *ft_colision(t_runtime *r, float x0, float y0)
         {
             r->line.rad_fov -= 2 * PI; 
         }
-        //printf("rad2 = %f\n", r->line.rad_in);
         calcul_line_interx(r, x0, y0);
         calcul_line_intery(r, x0, y0);
         if (r->line.end.x == r->line.start.x && r->line.end.y == r->line.start.y)
@@ -99,14 +95,9 @@ float *ft_colision(t_runtime *r, float x0, float y0)
         }
         r->line.end_def.x = r->line.end.x;
         r->line.end_def.y = r->line.end.y;
-        //printf("y = %f, x = %f\n ", r->line.end_defov.y, r->line.end_defov.x);
-       // my_draw_line(r);
         r->line.rad_raystart = tmp_rad;
-        r->line.rad_raystart += r->player.FOV/8;
-        //dist = calucl_dist(x0, r->line.end_def.x, y0, r->line.end_def.y) * cos(r->line.rad_raystart - r->player.pdir); 
+        r->line.rad_raystart += r->player.fov/8;
         dist_tab[(int)k] = calucl_dist(x0, r->line.end_def.x, y0, r->line.end_def.y) * cos(r->line.rad_raystart - r->player.pdir);
-        //
-       // printf("distt = %f\n", r->line.tab_dist[(int)k]);
         k++;
         dist_tab[(int)k] = -1;
     }
@@ -115,17 +106,7 @@ float *ft_colision(t_runtime *r, float x0, float y0)
 
 int playerendering2d(t_runtime  *r)
 {
-    //fillcubeborder(r);
-    /*for (int i = r->player.pos.y + 1; i < r->player.pos.y + PLAYER_SIZE; i++) {
-        for (int j = r->player.pos.x  - 1; j > r->player.pos.x - PLAYER_SIZE; j--) {
-            my_mlx_put_pixel(r->img, j, i, get_rgba(255, 0, 0, 255));
-        }
-    }*/
-     //printf("SOMEONE KILL ME\n");
-    //mlx_hook(r->mlx_win, 2, 1L<<0, my_keyhook, &r);
-   // mlx_key_hook(r->mlx_win, my_keyhook, r);
-  // mlx_hook(r->mlx_win, 2, 1L<<0, my_keyhook, r);
-    //mlx_key_hook(r->mlx_win, my_keyhook, r);
+
     int i;
     int j;
     for (i = 0; i < WIDTH; i++) {
@@ -135,7 +116,7 @@ int playerendering2d(t_runtime  *r)
     }
     for (i = 0;i < WIDTH; i += 2) {
         for (j = HEIGHT/2 ;j < HEIGHT; j++) {
-            my_mlx_put_pixel(r, i, j, get_rgba(255, 0, 0, 255));
+            my_mlx_put_pixel(r, i, j, get_rgba(r->color[FLR].c_red, r->color[FLR].c_green, r->color[FLR].c_blue, 255));
         }
     }
     for (i = 1;i < WIDTH; i += 2) {
@@ -145,7 +126,7 @@ int playerendering2d(t_runtime  *r)
     }
     for (j = HEIGHT/2;j < HEIGHT; j += 2) {
         for (i = WIDTH ;i < WIDTH; i++) {
-            my_mlx_put_pixel(r, i, j, get_rgba(255, 0, 0, 255));
+            my_mlx_put_pixel(r, i, j, get_rgba(r->color[CEIL].c_red, r->color[CEIL].c_green, r->color[CEIL].c_blue, 255));
         }
     }
     fov_rendering(r);
@@ -156,13 +137,13 @@ int playerendering2d(t_runtime  *r)
 void fov_rendering(t_runtime *r)
 {
     float tmp_rad;
-    float i = 0;
     t_point endinter;
+
+    float i = 0;
     int x = 0;
-    r->line.rad_fov= r->player.pdir + r->player.FOV/2;
+    r->line.rad_fov= r->player.pdir + r->player.fov/2;
     tmp_rad = r->line.rad_fov;
-    //printf("x = %f y = %f\n", r->player.pos.x, r->player.pos.y);
-    while (tmp_rad >= r->player.pdir - r->player.FOV/2)
+    while (tmp_rad >= r->player.pdir - r->player.fov/2)
     {
         tmp_rad = r->line.rad_fov;
         while (r->line.rad_fov < 0)
@@ -179,11 +160,11 @@ void fov_rendering(t_runtime *r)
        // my_draw_line(r);
         //r->line.rad_fov = tmp_rad;
         //fflush(stdout);
-        //r->line.rad_fov -= r->player.FOV / WIDTH;
+        //r->line.rad_fov -= r->player.fov / WIDTH;
         r->line.rad_fov = tmp_rad;
         r->line.rad_fov -= 0.0005457;
         r->line.dist = calucl_dist(r->player.pos.x, endinter.x, r->player.pos.y, endinter.y) * cos(r->line.rad_fov - r->player.pdir_v);
-        playerrendering3D(r, x);
+        playerrendering_3d(r, x);
         i++;
         x++;
     }
@@ -194,7 +175,7 @@ void fov_renderingg(t_runtime *r)
     float tmp_rad;
     float i = 0;
     t_point endinter;
-    float a =  -r->player.FOV/2;
+    float a =  -r->player.fov/2;
     int x = 0;
 
     while (x <= WIDTH)
@@ -216,12 +197,12 @@ void fov_renderingg(t_runtime *r)
        // my_draw_line(r);
         //r->line.rad_fov = tmp_rad;
         //fflush(stdout);
-        //r->line.rad_fov -= r->player.FOV / WIDTH;
+        //r->line.rad_fov -= r->player.fov / WIDTH;
         r->line.rad_fov = tmp_rad;
         r->line.dist = calucl_dist(r->player.pos.x, endinter.x, r->player.pos.y, endinter.y) * cos(a);
-        playerrendering3D(r, x);
+        playerrendering_3d(r, x);
         printf("tim\n");
-        a += (r->player.FOV / (WIDTH));
+        a += (r->player.fov / (WIDTH));
         i++;
         x++;
     }
@@ -232,9 +213,9 @@ void fov_renderingg(t_runtime *r)
 //    float tmp_rad;
 //    float i = 0;
 //    t_point endinter;
-//    r->line.rad_fov= r->player.pdir_v + r->player.FOV/2;
+//    r->line.rad_fov= r->player.pdir_v + r->player.fov/2;
 //    tmp_rad = r->line.rad_fov;
-//    while (tmp_rad >= r->player.pdir_v - r->player.FOV/2)
+//    while (tmp_rad >= r->player.pdir_v - r->player.fov/2)
 //    {
 //        //r->line.ort = HOR;
 //        //printf("i = %d\n", i);
@@ -255,7 +236,7 @@ void fov_renderingg(t_runtime *r)
 //       // my_draw_line(r);
 //        r->line.rad_fov = tmp_rad;
 //        fflush(stdout);
-//        r->line.rad_fov -= r->player.FOV / WIDTH;
+//        r->line.rad_fov -= r->player.fov / WIDTH;
 //        r->line.dist = calucl_dist(r->player.pos.x, r->line.end_defov.x, r->player.pos.y, r->line.end_defov.y) * cos(r->line.rad_fov - r->player.pdir_v); 
 //        playerrendering3D(r, i);
 //        printf("tim\n");
@@ -278,7 +259,7 @@ int my_keyhook(int keycode, t_runtime *r)
         mlx_destroy_image(r->mlx, r->txt_d[SO].img);
         mlx_destroy_image(r->mlx, r->txt_d[WE].img);
         mlx_destroy_window(r->mlx, r->mlx_win);
-        freeTab(r->map.map, charlen(r->map.map));
+        free_tab(r->map.map, charlen(r->map.map));
         system("pkill ffplay");
         exit(1);
     }
@@ -348,38 +329,7 @@ int my_keyhook(int keycode, t_runtime *r)
     return(0);
 }
 
-void my_draw_line(t_runtime *r)
-{
-    float xsta = r->line.start_fov.x;
-    float ysta = r->line.start_fov.y;
-    float xend = r->line.end_defov.x;
-    float yend = r->line.end_defov.y;
-    int e2;
-    float dx = my_fabs(xsta - xend);
-    float dy = my_fabs(ysta - yend);
-    float sx = (xsta < xend) ? 1 : -1;
-    float sy = (ysta < yend) ? 1 : -1;
-    float err = dx - dy;
-    while (1)
-    {
-        my_mlx_put_pixel(r, roundf((int)xsta), roundf((int)ysta), get_rgba(0, 255, 255, 255));
-        if (roundf(xsta) == roundf(xend) && roundf(ysta) == roundf(yend))
-            break;
-        e2 = 2* err;
-        if (e2 > -dy)
-        {
-            err -= dy;
-            xsta += sx;
-        }
-        if (e2 < dx)
-        {
-            err += dx;
-            ysta  += sy;
-        }
-    }
-}
-/*
-void my_draw_line_fov(t_runtime *r)
+/*void my_draw_line_fov(t_runtime *r)
 {
     int k = 0;
     float tmpx = r->line.start_v.x;

@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:57:56 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/24 14:57:59 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/26 18:50:18 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	init_tmp(t_runtime *r)
 	r->player.pdir = PI / 2;
 	r->coa = 0;
 	r->player.pdir_v = PI / 2;
-	r->textY = 0;
 	r->player.dir = DIR_W;
 	r->line.start.x = r->player.pos.x - 5;
 	r->line.start_v.x = r->player.pos.x - 5;
@@ -29,7 +28,7 @@ void	init_tmp(t_runtime *r)
 	r->line.start_fov.x = r->player.pos.x + 5;
 	r->line.end.x = r->line.start.x;
 	r->line.end.y = r->line.start.y;
-	r->player.FOV = PI / 3;
+	r->player.fov = PI / 3;
 	r->line.tab_dist = malloc(1920 * sizeof(float));
 }
 
@@ -45,7 +44,7 @@ int	main(int ac, char **av)
 		map_fill(&r, fd);
 		init_tmp(&r);
 		parsing(&r, av[1]);
-		init_Ppos(&r);
+		init_ppos(&r);
 		r.mlx = mlx_init();
 		r.mlx_win = mlx_new_window(r.mlx, WIDTH, HEIGHT, "Cub3d");
 		load_textures(&r);

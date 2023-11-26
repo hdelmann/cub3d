@@ -1,13 +1,13 @@
-NO ./textures/ses.xpm
+NO ./textures/bluestone.xpm
 SO ./textures/ses.xpm
 WE ./textures/socialcrd.xpm
 EA ./textures/mao.xpm
 F 0,0,255
-C 255,0,255
+C 255,0,0
 11111
-10S01
-11101
-10001
-11101
-10001
+1001
+11111
+100N01
+111001
+100001
 11111
