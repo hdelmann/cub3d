@@ -40,7 +40,7 @@ void	playerrendering_3d(void *param, float xray)
 	float		height;
 
 	r = param;
-	if (r->line.dist <= 1.0)
+	if ((int)r->line.dist < 1)
 	{
 		printf("Error: Out of bounds\n");
 		exit(1);

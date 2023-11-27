@@ -182,12 +182,16 @@ t_point calcul_inter(t_runtime *r, float dir)
 
     Xwall = play.x / CASE_SIZE;
     Ywall = play.y / CASE_SIZE;
+    if ((int)play.x % 64 == 0 || (int)play.y % 64 == 0)
+    {
+        play.x -= 0.0001;
+        play.y -= 0.0001;
+    }
     while (r->map.map[(int)Ywall][(int)Xwall] != '1')
     {
-        if (dir > 3 * PI / 2 && dir <= 2 * PI)
+        if (dir > 3 * PI / 2 && dir < 2 * PI)
         {
             teta = 2 * PI + atan(((Ywall * CASE_SIZE) - play.y) / (((Xwall + 1) * CASE_SIZE) - play.x));
-            //printf("xwall = %d et ywall = %d\n", Xwall, Ywall);
         }
         else if (dir > PI && dir < 3 * PI / 2)
         {
@@ -204,18 +208,21 @@ t_point calcul_inter(t_runtime *r, float dir)
         }
         if (dir > teta)
         {
-            if (dir > 3 * PI / 2 && dir <= 2 * PI)
+            if (dir > 3 * PI / 2 && dir < 2 * PI)
             {
                 r->line.ort = O;
                 wall.x = (Xwall + 1) * CASE_SIZE;
-                wall.y = play.y + (wall.x - play.x) * tan(dir);
+                if (tan(dir) == 0 || dir == PI / 2 || dir == 3 * PI / 2)
+                    wall.y = play.y;
+                else 
+                    wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall += 1;
             }
             else if (dir > PI && dir < 3 * PI/2)
             {
                 r->line.ort = N;
                 wall.y = Ywall * CASE_SIZE;
-                if (tan(dir) == 0)
+                if (tan(dir) == 0|| dir == PI / 2 || dir == 3 * PI / 2)
                     wall.x = play.x;
                 else 
                     wall.x = play.x + (wall.y - play.y) / tan(dir);
@@ -225,27 +232,30 @@ t_point calcul_inter(t_runtime *r, float dir)
             {
                 r->line.ort = E;
                 wall.x = Xwall * CASE_SIZE;
-                wall.y = play.y + (wall.x - play.x) * tan(dir);
+                if (tan(dir) == 0 || dir == PI / 2 || dir == 3 * PI / 2)
+                    wall.y = play.y;
+                else 
+                    wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall -= 1;
             }
             else{
                 r->line.ort = S;
                 wall.y = (Ywall + 1) * CASE_SIZE;
-                if(tan(dir) == 0)
+                if(tan(dir) == 0 || dir == PI / 2 || dir == 3 * PI / 2)
                     wall.x = play.x;
                 else
-                    wall.x = play.x + (wall.y - play.y) /tan(dir);
+                    wall.x = play.x + (wall.y - play.y) / tan(dir);
                 Ywall += 1;
             }
 
         }
         else
         {
-            if (dir > 3 * PI / 2 && dir <= 2 * PI)
+            if (dir > 3 * PI / 2 && dir < 2 * PI)
             {
                 r->line.ort = N;
                 wall.y = Ywall * CASE_SIZE;
-                if (tan(dir) == 0)
+                if (tan(dir) == 0 || dir == PI / 2 || dir == 3 * PI / 2)
                     wall.x = play.x;
                 else 
                     wall.x = play.x + (wall.y - play.y) / tan(dir);
@@ -255,14 +265,17 @@ t_point calcul_inter(t_runtime *r, float dir)
             {
                 r->line.ort = E;
                 wall.x = Xwall * CASE_SIZE;
-                wall.y = play.y + (wall.x - play.x) * tan(dir);
+                if (tan(dir) == 0 || dir == PI / 2 || dir == 3 * PI / 2)
+                    wall.y = play.y;
+                else 
+                    wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall -= 1;
             }
 	        else if (dir > PI / 2 && dir < PI)
             {
                 r->line.ort = S;
                 wall.y = (Ywall + 1) * CASE_SIZE;
-                if(tan(dir) == 0)
+                if(tan(dir) == 0 || dir == PI / 2 || dir == 3 * PI / 2)
                     wall.x = play.x;
                 else
                     wall.x = play.x + (wall.y - play.y) /tan(dir);
@@ -272,7 +285,10 @@ t_point calcul_inter(t_runtime *r, float dir)
             {
                 r->line.ort = O;
                 wall.x = (Xwall + 1) * CASE_SIZE;
-                wall.y = play.y + (wall.x - play.x) * tan(dir);
+                if (tan(dir) == 0 || dir == PI / 2 || dir == 3 * PI / 2)
+                    wall.y = play.y;
+                else 
+                    wall.y = play.y + (wall.x - play.x) * tan(dir);
                 Xwall += 1;
             }
         }
