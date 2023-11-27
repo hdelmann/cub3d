@@ -33,6 +33,7 @@ char	**get_map(char **file)
 		j++;
 	}
 	map[j] = 0;
+	free_tab(file, j);
 	return (erase_empty_lines(map));
 }
 

@@ -17,7 +17,7 @@ void	load_textures(t_runtime *r)
 	int	crd;
 
 	crd = NO;
-	r->txt_d[crd].img = malloc(sizeof(t_img *) * 4);
+	//r->txt_d[crd].img = malloc(sizeof(t_img *) * 4);
 	while (crd <= WE)
 	{
 		r->txt_d[crd].img = mlx_xpm_file_to_image(r->mlx, r->txtrs[crd].path,
