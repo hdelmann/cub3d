@@ -28,12 +28,12 @@ char	**get_map(char **file)
 	while (file[i])
 	{
 		map[j] = ft_strdup_r(file[i]);
-		map[j] = replace_s_to_1(file[i]);
+		//map[j] = replace_s_to_1(file[i]);
 		i++;
 		j++;
 	}
 	map[j] = 0;
-	free_tab(file, j);
+	free_tab(file, i);
 	return (erase_empty_lines(map));
 }
 

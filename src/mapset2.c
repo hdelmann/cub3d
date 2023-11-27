@@ -46,6 +46,7 @@ void	parsing(t_runtime *r, char *filename)
 {
 	filename_check(filename);
 	file_parsing(r);
+	r->map.map = replace_s_to_1(r->map.map);
 	if (check_map_t(r->map.map, CHARSET) == 0)
 	{
 		printf("Invalid char\n");

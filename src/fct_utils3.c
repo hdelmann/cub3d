@@ -85,16 +85,30 @@ void	free_tab(char **array, int size)
 	free (array);
 }
 
-char	*replace_s_to_1(char *line)
+char	**replace_s_to_1(char **tab)
 {
-	int	i;
+	char **tab1;
+	int i;
+	int j;
 
+	tab1 = malloc(sizeof(char *) * (charlen(tab) + 1));
 	i = 0;
-	while (line[i] != '\0')
+	while(tab[i] != NULL)
 	{
-		if (line[i] == ' ')
-			line[i] = '1';
+		j = 0;
+		tab1[i] = malloc(sizeof(char) * (my_strlen(tab[i]) + 1));
+		while(tab[i][j] != '\0')
+		{
+			if(tab[i][j] == ' ')
+				tab1[i][j] = '1';
+			else
+				tab1[i][j] = tab[i][j];
+			j++;
+		}
+		tab1[i][j] = '\0';
 		i++;
 	}
-	return (line);
+	tab1[i] = NULL;
+	free_tab(tab, i);
+	return(tab1);
 }
