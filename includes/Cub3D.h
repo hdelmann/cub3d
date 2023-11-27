@@ -82,6 +82,8 @@ typedef struct player
 
 typedef struct s_line
 {
+	int Xwall;
+	int Ywall;
 	float	dist;
 	int		ort;
 	int		ort2;
