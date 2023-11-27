@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 15:18:41 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/26 20:58:08 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:06:51 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ char	**ft_split(char const *s, char c);
 int		my_mlx_put_pixel(t_runtime *r, uint32_t x, uint32_t y, uint32_t color);
 int		parse_txt(t_runtime *r);
 int		multiple_comma(char *array);
+char	*replace_s_to_1(char *line);
 void	my_mlx_pixel_put(t_runtime *r, int x, int y, int color);
 void	file_parsing(t_runtime *r);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);

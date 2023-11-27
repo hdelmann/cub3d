@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 19:30:09 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/26 19:31:51 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:09:55 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	**get_map(char **file)
 	while (file[i])
 	{
 		map[j] = ft_strdup_r(file[i]);
+		map[j] = replace_s_to_1(file[i]);
 		i++;
 		j++;
 	}

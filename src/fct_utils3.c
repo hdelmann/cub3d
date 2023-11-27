@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 18:24:52 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/26 18:28:22 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/27 20:05:57 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,18 @@ void	free_tab(char **array, int size)
 		i++;
 	}
 	free (array);
+}
+
+char	*replace_s_to_1(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == ' ')
+			line[i] = '1';
+		i++;
+	}
+	return (line);
 }
