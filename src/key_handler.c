@@ -15,7 +15,8 @@
 int	close_window(int keycode, t_runtime *r)
 {
 	(void)keycode;
-	destroy_all(r);
+	(void)r;
+	exit (1);
 	return (0);
 }
 

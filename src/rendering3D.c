@@ -43,15 +43,15 @@ void	calcul_board(t_runtime *r)
 
 	dir = 3 * PI / 4 - 0.1;
 	x = 0;
-	while (x <= 6)
+	while (x <= 8)
 	{
 		endinter = calcul_inter2(r, dir);
 		dist = calucl_dist(r->player.pos.x, endinter.x, r->player.pos.y,
 				endinter.y) * cos(dir);
 		if (dist < 0)
 			dist = -dist;
-		dir += PI / 4;
-		if (dist < 3)
+		dir += PI / 6;
+		if (dist < 2.3)
 		{
 			printf("Error: Out of bounds\n");
 			exit(1);
@@ -67,7 +67,7 @@ void	playerrendering_3d(void *param, float xray)
 
 	r = param;
 	calcul_board(r);
-	if (r->line.dist <= 3)
+	if (r->line.dist < 1.5)
 	{
 		printf("Error: Out of bounds\n");
 		exit(1);
