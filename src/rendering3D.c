@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 15:37:55 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/26 19:21:51 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 02:51:02 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	playerrendering_3d(void *param, float xray)
 	float		height;
 
 	r = param;
-	if ((int)r->line.dist < 1)
+	if ((int)r->line.dist <= 3)
 	{
 		printf("Error: Out of bounds\n");
 		exit(1);

@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:57:56 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/28 01:22:13 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 02:39:44 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	init_tmp(t_runtime *r)
 	r->line.end.x = r->line.start.x;
 	r->line.end.y = r->line.start.y;
 	r->player.fov = PI / 3;
+	r->prevd = 700;
 	r->line.tab_dist = malloc(1920 * sizeof(float));
 }
 

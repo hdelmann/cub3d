@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 15:18:41 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/28 02:19:56 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 02:35:13 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ typedef struct s_runtime
 	float		xray;
 	int			len1;
 	float		teta;
+	float		prevd;
 	int			len2;
 }			t_runtime;
 
