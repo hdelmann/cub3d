@@ -95,3 +95,12 @@ char	**replace_s_to_1(char **tab)
 	free_tab(tab, i);
 	return (tab1);
 }
+
+void ft_strcpy(char *dest, const char *src) {
+    while (*src != '\0') {
+        *dest = *src;
+        dest++;
+        src++;
+    }
+    *dest = '\0';
+}

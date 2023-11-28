@@ -84,6 +84,8 @@ typedef struct s_line
 {
 	int		x_wall;
 	int		y_wall;
+	int		x_wall2;
+	int		y_wall2;
 	float	dist;
 	int		ort;
 	int		ort2;
@@ -170,12 +172,16 @@ typedef struct s_runtime
 	float		xray;
 	int			len1;
 	float		teta;
+	float		teta2;
 	float		prevd;
 	int			len2;
 }			t_runtime;
 
+void ft_strcpy(char *dest, const char *src);
+char **completeStrings(char **strings);
 void	free_tab(char **array, int size);
 t_point	calcul_inter(t_runtime *r, float dir);
+t_point	calcul_inter2(t_runtime *r, float dir);
 char	*ft_strdup_r(const char *s1);
 int		chk_siderows(t_runtime *r);
 char	**erase_empty_lines(char **file);
@@ -215,7 +221,7 @@ float	*my_reallocfloat(float *ptr, int Newsize);
 void	calcul_line_fovx(void *param);
 void	calcul_line_fovy(void *param);
 char	*replace_n_to_r(char *line);
-char	**tab_inv(char **tab);
+char	**tab_inv(char **strings);
 int		charset(char c);
 int		is_empty(char *line);
 void	my_mlx_pixel_put(t_runtime *r, int x, int y, int color);
@@ -243,6 +249,10 @@ t_point	calcul_1(t_point wall, t_point play, float dir, t_runtime *r);
 t_point	calcul_2(t_point wall, t_point play, float dir, t_runtime *r);
 t_point	calcul_3(t_point wall, t_point play, float dir, t_runtime *r);
 t_point	calcul_4(t_point wall, t_point play, float dir, t_runtime *r);
+t_point	calcul_12(t_point wall, t_point play, float dir, t_runtime *r);
+t_point	calcul_22(t_point wall, t_point play, float dir, t_runtime *r);
+t_point	calcul_32(t_point wall, t_point play, float dir, t_runtime *r);
+t_point	calcul_42(t_point wall, t_point play, float dir, t_runtime *r);
 float	calcul_teta(float dir, t_point play, int x_wall, int y_wall);
 void	d_handler(t_runtime *r);
 void	r_arrow_handle(t_runtime *r);

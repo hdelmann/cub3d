@@ -83,3 +83,53 @@ int	is_line_empty(char *str)
 	}
 	return (1);
 }
+
+char **completeStrings(char **strings) {
+    // Trouver la longueur maximale
+    size_t maxLength = 0;
+    int i = 0;
+
+    while (strings[i] != NULL) {
+        size_t currentLength = my_strlen(strings[i]);
+        if (currentLength > maxLength) {
+            maxLength = currentLength;
+        }
+        i++;
+    }
+
+    // Allouer de la mémoire pour le nouveau tableau
+    char **result = (char **)malloc((i + 1) * sizeof(char *));
+    if (result == NULL) {
+        perror("Erreur d'allocation de mémoire");
+        exit(EXIT_FAILURE);
+    }
+
+    // Allouer de la mémoire pour chaque chaîne dans le nouveau tableau
+    i = 0;
+    while (strings[i] != NULL) {
+        result[i] = (char *)malloc((maxLength + 1) * sizeof(char));
+        if (result[i] == NULL) {
+            perror("Erreur d'allocation de mémoire");
+            exit(EXIT_FAILURE);
+        }
+
+        // Copier la chaîne existante dans le nouveau tableau
+        ft_strcpy(result[i], strings[i]);
+
+        // Compléter avec des '1' pour atteindre la longueur maximale
+        size_t j = my_strlen(result[i]);
+        while (j < maxLength) {
+            result[i][j] = '1';
+            j++;
+        }
+
+        // Ajouter le caractère de fin de chaîne
+        result[i][maxLength] = '\0';
+        i++;
+    }
+
+    // Terminer le nouveau tableau avec NULL
+    result[i] = NULL;
+	free_tab(strings, charlen(strings));
+    return result;
+}

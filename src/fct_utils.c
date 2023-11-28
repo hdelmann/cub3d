@@ -12,32 +12,50 @@
 
 #include "../includes/Cub3D.h"
 
-char	**tab_inv(char **tab)
-{
-	char	**tab_inv;
-	int		i;
-	int		j;
-	int		k;
+char *reverseString(const char *original) {
+    size_t length = my_strlen(original);
+    char *reversed = (char *)malloc((length + 1) * sizeof(char));
 
-	i = 0;
-	j = 0;
-	tab_inv = malloc(sizeof(char *) * (charlen(tab) + 1));
-	while (tab[i] != NULL)
-	{
-		k = 0;
-		j = my_strlen(tab[i]);
-		tab_inv[i] = malloc(sizeof(char) * (j + 1));
-		while (j >= 0)
-		{
-			tab_inv[i][k] = tab[i][j];
-			k++;
-			j--;
-		}
-		tab_inv[i][k] = '\0';
-		i++;
-	}
-	tab_inv[i] = NULL;
-	return (tab_inv);
+    if (reversed == NULL) {
+        perror("Erreur d'allocation de mémoire");
+        exit(EXIT_FAILURE);
+    }
+
+    size_t i = 0;
+    while (i < length) {
+        reversed[i] = original[length - i - 1];
+        i++;
+    }
+
+    reversed[length] = '\0';
+
+    return reversed;
+}
+
+char **tab_inv(char **strings) {
+    // Trouver la longueur du tableau
+    int numStrings = 0;
+    while (strings[numStrings] != NULL) {
+        numStrings++;
+    }
+
+    char **result = (char **)malloc((numStrings + 1) * sizeof(char *));
+
+    if (result == NULL) {
+        perror("Erreur d'allocation de mémoire");
+        exit(EXIT_FAILURE);
+    }
+
+    int i = 0;
+    while (strings[i] != NULL) {
+        result[i] = reverseString(strings[i]);
+        i++;
+    }
+
+    // Terminer le nouveau tableau avec NULL
+    result[numStrings] = NULL;
+	free_tab(strings, charlen(strings));
+    return result;
 }
 
 float	*my_reallocfloat(float *ptr, int Newsize)

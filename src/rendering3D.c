@@ -34,17 +34,45 @@ void	calort(void *param)
 	}
 }
 
+void	calcul_board(t_runtime *r)
+{
+	float dir;
+	float dist;
+	int x;
+	t_point endinter;
+	dir = 3*PI/4 - 0.1;
+	x = 0;
+	while (x <= 6)
+	{
+		endinter = calcul_inter2(r, dir);
+		dist = calucl_dist(r->player.pos.x, endinter.x, r->player.pos.y,
+				endinter.y) * cos(dir);
+		if (dist < 0)
+			dist = -dist;
+		//printf("dist = %f\n", dist);
+		dir += PI /4;
+		if (dist < 1)
+		{
+			printf("Error: Out of bounds\n");
+			exit(1);
+		}
+		x++;
+	}
+}
+
 void	playerrendering_3d(void *param, float xray)
 {
 	t_runtime	*r;
 	float		height;
 
 	r = param;
-	if ((int)r->line.dist <= 3)
+	calcul_board(r);
+	if (r->line.dist < 1)
 	{
 		printf("Error: Out of bounds\n");
 		exit(1);
 	}
+	//printf("dist = %f\n", r->line.dist);
 	height = fabs((64.0 / r->line.dist) * (960.0 / tan(30.0)));
 	r->start_y = 540.0 - (height / 2.0);
 	r->end_y = 540.0 + (height / 2.0);
