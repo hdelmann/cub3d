@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 11:20:58 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/26 11:21:10 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 01:26:52 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,21 @@ void	my_mlx_pixel_put(t_runtime *r, int x, int y, int color)
 
 	dst = r->img.addr + (y * r->img.line_length + x * (r->img.bpp / 8));
 	*(unsigned int *)dst = color;
+}
+
+void	free_tab(char **array, int size)
+{
+	int	i;
+
+	if (array == NULL)
+	{
+		return ;
+	}
+	i = 0;
+	while (i < size)
+	{
+		free (array[i]);
+		i++;
+	}
+	free (array);
 }

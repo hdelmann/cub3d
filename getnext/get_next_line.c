@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/18 18:55:09 by jgirard-          #+#    #+#             */
-/*   Updated: 2022/06/23 02:10:44 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 02:23:47 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*get_next_line(int fd)
 }
 
 char	*ft_readline(int fd, char *storage)
-{	
+{
 	int		byread;
 	char	*buf;
 

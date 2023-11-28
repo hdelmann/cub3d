@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/23 02:21:53 by jgirard-          #+#    #+#             */
-/*   Updated: 2022/06/26 20:25:47 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 02:24:32 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*ft_readtill(char *storage)
 	{
 		till[i] = storage[i];
 		i++;
-	}	
+	}
 	till[i] = '\0';
 	return (till);
 }

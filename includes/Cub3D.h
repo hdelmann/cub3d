@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 15:18:41 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/27 20:06:51 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 02:19:56 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ typedef struct player
 
 typedef struct s_line
 {
-	int Xwall;
-	int Ywall;
+	int		x_wall;
+	int		y_wall;
 	float	dist;
 	int		ort;
 	int		ort2;
@@ -169,6 +169,7 @@ typedef struct s_runtime
 	float		end_y;
 	float		xray;
 	int			len1;
+	float		teta;
 	int			len2;
 }			t_runtime;
 
@@ -217,6 +218,7 @@ char	**tab_inv(char **tab);
 int		charset(char c);
 int		is_empty(char *line);
 void	my_mlx_pixel_put(t_runtime *r, int x, int y, int color);
+void	destroy_all(t_runtime *r);
 int		get_rgba(int r, int g, int b, int a);
 void	fillcubeborder(t_runtime *r);
 int		playerendering2d(t_runtime *r);
@@ -226,6 +228,7 @@ float	calucl_dist(float x0, float x1, float y0, float y1);
 void	calcul_line_interx(void *param, float x0, float y0);
 void	calcul_line_intery(void *param, float x0, float y0);
 void	my_draw_line(t_runtime *r);
+int		close_window(int keycode, t_runtime *r);
 void	my_draw_line_3D(float x0, float y0, float y1, t_runtime *r);
 float	my_fabs(float i);
 void	playerrendering_3d(void *param, float xray);
@@ -235,5 +238,14 @@ void	fov_rendering(t_runtime *r);
 int		txt_wall_ort(t_runtime *r, float ysta, float yend);
 void	parsing(t_runtime *r, char *filename);
 void	init_ppos(t_runtime *r);
+t_point	calcul_1(t_point wall, t_point play, float dir, t_runtime *r);
+t_point	calcul_2(t_point wall, t_point play, float dir, t_runtime *r);
+t_point	calcul_3(t_point wall, t_point play, float dir, t_runtime *r);
+t_point	calcul_4(t_point wall, t_point play, float dir, t_runtime *r);
+float	calcul_teta(float dir, t_point play, int x_wall, int y_wall);
+void	d_handler(t_runtime *r);
+void	r_arrow_handle(t_runtime *r);
+void	l_arrow_handle(t_runtime *r);
+void	p_posini(t_runtime *r);
 
 #endif

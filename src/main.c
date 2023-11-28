@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 14:57:56 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/26 18:50:18 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 01:22:13 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int	main(int ac, char **av)
 				&r.img.line_length, &r.img.endian);
 		mlx_hook(r.mlx_win, 2, 1L << 0, my_keyhook, &r);
 		mlx_loop_hook(r.mlx, playerendering2d, &r);
+		mlx_hook(r.mlx_win, 17, 1L << 17, close_window, &r);
 		mlx_loop(r.mlx);
-		printf("lol\n");
 		return (0);
 	}
 }

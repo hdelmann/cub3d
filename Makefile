@@ -16,8 +16,11 @@ FLAGS    := -Wall -Wextra -Werror -g
 
 SRCS        :=      src/fct_utils.c \
                           src/calculate_line.c \
+                          src/calculate_line2.c \
                           src/texture_handling.c \
                           src/main.c \
+						  src/key_handler.c \
+						  src/key_handler2.c \
                           src/rendering3D.c \
                           src/mapset.c \
                           src/mapset2.c \

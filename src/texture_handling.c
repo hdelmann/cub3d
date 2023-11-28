@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/24 15:53:45 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/26 19:23:36 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 00:31:59 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	load_textures(t_runtime *r)
 	int	crd;
 
 	crd = NO;
-	//r->txt_d[crd].img = malloc(sizeof(t_img *) * 4);
 	while (crd <= WE)
 	{
 		r->txt_d[crd].img = mlx_xpm_file_to_image(r->mlx, r->txtrs[crd].path,

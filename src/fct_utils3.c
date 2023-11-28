@@ -6,7 +6,7 @@
 /*   By: jgirard- <jgirard-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/26 18:24:52 by jgirard-          #+#    #+#             */
-/*   Updated: 2023/11/27 20:05:57 by jgirard-         ###   ########.fr       */
+/*   Updated: 2023/11/28 01:26:44 by jgirard-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,38 +68,21 @@ char	*replace_n_to_r(char *line)
 	return (line);
 }
 
-void	free_tab(char **array, int size)
-{
-	int	i;
-
-	if (array == NULL)
-	{
-		return ;
-	}
-	i = 0;
-	while (i < size)
-	{
-		free (array[i]);
-		i++;
-	}
-	free (array);
-}
-
 char	**replace_s_to_1(char **tab)
 {
-	char **tab1;
-	int i;
-	int j;
+	char	**tab1;
+	int		i;
+	int		j;
 
 	tab1 = malloc(sizeof(char *) * (charlen(tab) + 1));
 	i = 0;
-	while(tab[i] != NULL)
+	while (tab[i] != NULL)
 	{
 		j = 0;
 		tab1[i] = malloc(sizeof(char) * (my_strlen(tab[i]) + 1));
-		while(tab[i][j] != '\0')
+		while (tab[i][j] != '\0')
 		{
-			if(tab[i][j] == ' ')
+			if (tab[i][j] == ' ')
 				tab1[i][j] = '1';
 			else
 				tab1[i][j] = tab[i][j];
@@ -110,5 +93,5 @@ char	**replace_s_to_1(char **tab)
 	}
 	tab1[i] = NULL;
 	free_tab(tab, i);
-	return(tab1);
+	return (tab1);
 }
