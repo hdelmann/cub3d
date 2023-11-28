@@ -25,6 +25,7 @@ SRCS        :=      src/fct_utils.c \
                           src/rendering3D.c \
                           src/mapset.c \
                           src/mapset2.c \
+                          src/mapset3.c \
                           src/rendering2d.c \
                           src/draw.c \
                           getnext/get_next_line_utils.c \

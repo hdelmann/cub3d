@@ -12,7 +12,7 @@
 
 #include "../includes/Cub3D.h"
 
-static int	ft_mots(char const *str, char c)
+static int	ft_words(char const *str, char c)
 {
 	int	i;
 	int	j;
@@ -33,7 +33,7 @@ static int	ft_mots(char const *str, char c)
 	return (j);
 }
 
-static char	*ft_mettre(char *mot, char const *s, int i, int len)
+static char	*ft_insert(char *mot, char const *s, int i, int len)
 {
 	int	j;
 
@@ -69,7 +69,7 @@ static char	**ft_sep(char const *s, char c, char **s2, int num)
 		s2[mot] = (char *)malloc(sizeof(char) * (len + 1));
 		if (!s2)
 			return (0);
-		ft_mettre(s2[mot], s, i, len);
+		ft_insert(s2[mot], s, i, len);
 		len = 0;
 		mot++;
 	}
@@ -84,7 +84,7 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (0);
-	num = ft_mots(s, c);
+	num = ft_words(s, c);
 	s2 = (char **)malloc(sizeof(char *) * (num + 1));
 	if (!s2)
 		return (0);

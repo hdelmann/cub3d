@@ -12,50 +12,55 @@
 
 #include "../includes/Cub3D.h"
 
-char *reverseString(const char *original) {
-    size_t length = my_strlen(original);
-    char *reversed = (char *)malloc((length + 1) * sizeof(char));
+char	*reverse_string(const char *original)
+{
+	size_t	length;
+	char	*reversed;
+	size_t	i;
 
-    if (reversed == NULL) {
-        perror("Erreur d'allocation de mémoire");
-        exit(EXIT_FAILURE);
-    }
-
-    size_t i = 0;
-    while (i < length) {
-        reversed[i] = original[length - i - 1];
-        i++;
-    }
-
-    reversed[length] = '\0';
-
-    return reversed;
+	length = my_strlen(original);
+	reversed = (char *)malloc((length + 1) * sizeof(char));
+	if (reversed == NULL)
+	{
+		perror("Erreur d'allocation de mémoire");
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
+	while (i < length)
+	{
+		reversed[i] = original[length - i - 1];
+		i++;
+	}
+	reversed[length] = '\0';
+	return (reversed);
 }
 
-char **tab_inv(char **strings) {
-    // Trouver la longueur du tableau
-    int numStrings = 0;
-    while (strings[numStrings] != NULL) {
-        numStrings++;
-    }
+char	**tab_inv(char **strings)
+{
+	int		num_strings;
+	int		i;
+	char	**result;
 
-    char **result = (char **)malloc((numStrings + 1) * sizeof(char *));
-
-    if (result == NULL) {
-        perror("Erreur d'allocation de mémoire");
-        exit(EXIT_FAILURE);
-    }
-
-    int i = 0;
-    while (strings[i] != NULL) {
-        result[i] = reverseString(strings[i]);
-        i++;
-    }
-
-    // Terminer le nouveau tableau avec NULL
-    result[numStrings] = NULL;
+	i = 0;
+	num_strings = 0;
+	while (strings[num_strings] != NULL)
+	{
+		num_strings++;
+	}
+	result = (char **)malloc((num_strings + 1) * sizeof(char *));
+	if (result == NULL)
+	{
+		perror("Erreur d'allocation de mémoire");
+		exit(EXIT_FAILURE);
+	}
+	while (strings[i] != NULL)
+	{
+		result[i] = reverse_string(strings[i]);
+		i++;
+	}
+	result[num_strings] = NULL;
 	free_tab(strings, charlen(strings));
-    return result;
+	return (result);
 }
 
 float	*my_reallocfloat(float *ptr, int Newsize)
@@ -73,15 +78,6 @@ float	*my_reallocfloat(float *ptr, int Newsize)
 	dst[i] = -1;
 	free(ptr);
 	return (dst);
-}
-
-float	calucl_dist(float x0, float x1, float y0, float y1)
-{
-	float	dist;
-
-	dist = sqrt(((x1 - x0) * (x1 - x0))
-			+ ((y1 - y0) * (y1 - y0)));
-	return (dist);
 }
 
 char	*ft_strdup(char	*dst, char *src)

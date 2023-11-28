@@ -33,7 +33,8 @@ int	is_map_surrounded(t_runtime *r)
 	while (r->map.map[i + 1])
 	{
 		last = my_strlen(r->map.map[i]) - 1;
-		if (r->map.map[i][0] != '1' || r->map.map[i][last] != '1')
+		if ((r->map.map[i][0] != '1' && r->map.map[i][0] != ' ' )
+			|| (r->map.map[i][last] != '1' && r->map.map[i][last] != ' '))
 			map_error();
 		i++;
 	}
@@ -46,8 +47,6 @@ void	parsing(t_runtime *r, char *filename)
 {
 	filename_check(filename);
 	file_parsing(r);
-	r->map.map = replace_s_to_1(r->map.map);
-	r->map.map = completeStrings(r->map.map);
 	if (check_map_t(r->map.map, CHARSET) == 0)
 	{
 		printf("Invalid char\n");
@@ -55,16 +54,12 @@ void	parsing(t_runtime *r, char *filename)
 	}
 	if (is_map_surrounded(r) == 1)
 	{
-		printf("Invalid map\n");
+		printf("Error: Invalid map\n");
 		exit(1);
 	}
+	r->map.map = replace_s_to_1(r->map.map);
+	r->map.map = complete_strings(r->map.map);
 	r->map.map = tab_inv(r->map.map);
-	int i = 0;
-	while(r->map.map[i] != NULL)
-	{
-		printf("map = %s\n", r->map.map[i]);
-		i++;
-	}
 }
 
 void	map_fill(t_runtime *r, int fd)

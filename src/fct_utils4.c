@@ -44,22 +44,6 @@ char	*ft_strdup_f(char *src)
 	return (p);
 }
 
-char	**ft_strcpy_env(char **envp)
-{
-	int		i;
-	char	**cpyenv;
-
-	i = 0;
-	cpyenv = NULL;
-	while (envp[i])
-	{
-		cpyenv[i] = ft_strdup_f(envp[i]);
-		i++;
-	}
-	cpyenv[i] = NULL;
-	return (cpyenv);
-}
-
 int	ft_is_space(int n)
 {
 	return (n == '\r'
@@ -84,52 +68,51 @@ int	is_line_empty(char *str)
 	return (1);
 }
 
-char **completeStrings(char **strings) {
-    // Trouver la longueur maximale
-    size_t maxLength = 0;
-    int i = 0;
+char	**complete_strings(char **strings)
+{
+	size_t	max_length;
+	int		i;
+	size_t	current_length;
+	size_t	j;
+	char	**result;
 
-    while (strings[i] != NULL) {
-        size_t currentLength = my_strlen(strings[i]);
-        if (currentLength > maxLength) {
-            maxLength = currentLength;
-        }
-        i++;
-    }
-
-    // Allouer de la mémoire pour le nouveau tableau
-    char **result = (char **)malloc((i + 1) * sizeof(char *));
-    if (result == NULL) {
-        perror("Erreur d'allocation de mémoire");
-        exit(EXIT_FAILURE);
-    }
-
-    // Allouer de la mémoire pour chaque chaîne dans le nouveau tableau
-    i = 0;
-    while (strings[i] != NULL) {
-        result[i] = (char *)malloc((maxLength + 1) * sizeof(char));
-        if (result[i] == NULL) {
-            perror("Erreur d'allocation de mémoire");
-            exit(EXIT_FAILURE);
-        }
-
-        // Copier la chaîne existante dans le nouveau tableau
-        ft_strcpy(result[i], strings[i]);
-
-        // Compléter avec des '1' pour atteindre la longueur maximale
-        size_t j = my_strlen(result[i]);
-        while (j < maxLength) {
-            result[i][j] = '1';
-            j++;
-        }
-
-        // Ajouter le caractère de fin de chaîne
-        result[i][maxLength] = '\0';
-        i++;
-    }
-
-    // Terminer le nouveau tableau avec NULL
-    result[i] = NULL;
+	i = 0;
+	max_length = 0;
+	while (strings[i] != NULL)
+	{
+		current_length = my_strlen(strings[i]);
+		if (current_length > max_length)
+		{
+			max_length = current_length;
+		}
+		i++;
+	}
+	result = (char **)malloc((i + 1) * sizeof(char *));
+	if (result == NULL)
+	{
+		perror("Error: Malloc error on map\n");
+		exit(EXIT_FAILURE);
+	}
+	i = 0;
+	while (strings[i] != NULL)
+	{
+		result[i] = (char *)malloc((max_length + 1) * sizeof(char));
+		if (result[i] == NULL)
+		{
+			perror("Error: Malloc error on map\n");
+			exit(EXIT_FAILURE);
+		}
+		ft_strcpy(result[i], strings[i]);
+		j = my_strlen(result[i]);
+		while (j < max_length)
+		{
+			result[i][j] = '1';
+			j++;
+		}
+		result[i][max_length] = '\0';
+		i++;
+	}
+	result[i] = NULL;
 	free_tab(strings, charlen(strings));
-    return result;
+	return (result);
 }

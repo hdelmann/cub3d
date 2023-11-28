@@ -42,18 +42,6 @@ int	charlen(char **tableau)
 	return (longueur);
 }
 
-int	my_strlen(const char *chaine)
-{
-	int	longueur;
-
-	longueur = 0;
-	while (chaine[longueur] != '\0')
-	{
-		longueur++;
-	}
-	return (longueur);
-}
-
 char	*replace_n_to_r(char *line)
 {
 	int	i;
@@ -96,11 +84,13 @@ char	**replace_s_to_1(char **tab)
 	return (tab1);
 }
 
-void ft_strcpy(char *dest, const char *src) {
-    while (*src != '\0') {
-        *dest = *src;
-        dest++;
-        src++;
-    }
-    *dest = '\0';
+void	ft_strcpy(char *dest, const char *src)
+{
+	while (*src != '\0')
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+	*dest = '\0';
 }

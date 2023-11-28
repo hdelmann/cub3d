@@ -46,7 +46,8 @@ enum {
 # define PI 3.141592653589793238462643383279502884197
 # define HEIGHT 1080
 # define WIDTH 1920
-# define CHARSET "10NEWS"
+# define CHARSET "10NEWS "
+# define DIRSET  "NEWS0"
 # define PCHARSET "NEWS"
 # define FLR 0
 # define CEIL 1
@@ -177,8 +178,8 @@ typedef struct s_runtime
 	int			len2;
 }			t_runtime;
 
-void ft_strcpy(char *dest, const char *src);
-char **completeStrings(char **strings);
+void	ft_strcpy(char *dest, const char *src);
+char	**complete_strings(char **strings);
 void	free_tab(char **array, int size);
 t_point	calcul_inter(t_runtime *r, float dir);
 t_point	calcul_inter2(t_runtime *r, float dir);
@@ -244,6 +245,8 @@ int		my_strlen(const char *chaine);
 void	fov_rendering(t_runtime *r);
 int		txt_wall_ort(t_runtime *r, float ysta, float yend);
 void	parsing(t_runtime *r, char *filename);
+void	minisiderowsl2(t_runtime *r, int i, int j);
+void	minisiderowsl3(t_runtime *r, int i, int j);
 void	init_ppos(t_runtime *r);
 t_point	calcul_1(t_point wall, t_point play, float dir, t_runtime *r);
 t_point	calcul_2(t_point wall, t_point play, float dir, t_runtime *r);

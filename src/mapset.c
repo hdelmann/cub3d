@@ -50,53 +50,33 @@ int	only_wall(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] != '1')
+		if (line[i] != '1' && line[i] != ' ')
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-void	mini_siderowsl1(t_runtime *r, int i, int j)
+void	minisiderowsl2(t_runtime *r, int i, int j)
 {
-	r->len1 = my_strlen(r->map.map[i]);
-	if (r->map.map[i + 1])
-		r->len2 = my_strlen(r->map.map[i + 1]);
-	if (r->len1 > r->len2)
+	while (r->map.map[i][j])
 	{
-		j = r->len2;
-		while (r->map.map[i][j])
-		{
-			if (r->map.map[i][j] == '0' && r->map.map[i + 1][j] != '1')
-				map_error();
-			j++;
-		}
-	}
-	if (r->len2 > r->len1)
-	{
-		j = r->len1;
-		while (r->map.map[i + 1][j])
-		{
-			if (r->map.map[i + 1][j] == '0' && r->map.map[i][j] != '1')
-				map_error();
-			j++;
-		}
+		if ((r->map.map[i][j] == ' ' || r->map.map[i][j] == 'N'
+				|| r->map.map[i][j] == 'W' || r->map.map[i][j] == 'E'
+					|| r->map.map[i][j] == 'S') && r->map.map[i][j + 1] != '1')
+			map_error();
+		j++;
 	}
 }
 
-int	chk_siderows(t_runtime *r)
+void	minisiderowsl3(t_runtime *r, int i, int j)
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	r->len1 = 0;
-	r->len2 = 0;
-	while (r->map.map[i])
+	while (r->map.map[i + 1][j])
 	{
-		mini_siderowsl1(r, i, j);
-		i++;
+		if ((r->map.map[i + 1][j] == ' ' || r->map.map[i + 1][j] == 'N'
+				|| r->map.map[i + 1][j] == 'W' || r->map.map[i + 1][j] == 'E'
+					|| r->map.map[i + 1][j] == 'S') && r->map.map[i][j] != '1')
+			map_error();
+		j++;
 	}
-	return (0);
 }
