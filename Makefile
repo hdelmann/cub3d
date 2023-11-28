@@ -34,6 +34,7 @@ SRCS        :=      src/fct_utils.c \
 						  src/fct_utils2.c \
 						  src/fct_utils3.c \
 						  src/fct_utils4.c \
+						  src/fct_utils5.c \
                           src/parsing.c \
 						  src/parsing2.c \
 						  src/parsing3.c \

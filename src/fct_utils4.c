@@ -72,36 +72,15 @@ char	**complete_strings(char **strings)
 {
 	size_t	max_length;
 	int		i;
-	size_t	current_length;
 	size_t	j;
 	char	**result;
 
-	i = 0;
-	max_length = 0;
-	while (strings[i] != NULL)
-	{
-		current_length = my_strlen(strings[i]);
-		if (current_length > max_length)
-		{
-			max_length = current_length;
-		}
-		i++;
-	}
-	result = (char **)malloc((i + 1) * sizeof(char *));
-	if (result == NULL)
-	{
-		perror("Error: Malloc error on map\n");
-		exit(EXIT_FAILURE);
-	}
+	max_length = calcul_max_l(strings);
+	result = (char **)malloc((charlen(strings) + 1) * sizeof(char *));
 	i = 0;
 	while (strings[i] != NULL)
 	{
 		result[i] = (char *)malloc((max_length + 1) * sizeof(char));
-		if (result[i] == NULL)
-		{
-			perror("Error: Malloc error on map\n");
-			exit(EXIT_FAILURE);
-		}
 		ft_strcpy(result[i], strings[i]);
 		j = my_strlen(result[i]);
 		while (j < max_length)

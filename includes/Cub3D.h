@@ -261,5 +261,6 @@ void	d_handler(t_runtime *r);
 void	r_arrow_handle(t_runtime *r);
 void	l_arrow_handle(t_runtime *r);
 void	p_posini(t_runtime *r);
+int		calcul_max_l(char **strings);
 
 #endif
