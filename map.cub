@@ -2,8 +2,8 @@ NO ./textures/bluestone.xpm
 SO ./textures/ses.xpm
 WE ./textures/socialcrd.xpm
 EA ./textures/mao.xpm
+C 255,2,255
 F 0,0,255
-C 255,0,0
 1  11111111
 1111
  1N001
